@@ -1,6 +1,5 @@
-import FeaturedProduct from "./components/product/featuredProduct";
 
-const getAllProduct = async () => {
+const getAllProducts = async () => {
     try {
         const res = await fetch("http://localhost:3000/api/product", {
             cache: "no-store"
@@ -15,11 +14,4 @@ const getAllProduct = async () => {
     }
 }
 
-const Page = async () => {
-    const allProductList = await getAllProduct()
- return(
-    <FeaturedProduct listProduct={allProductList} />
- )
-}
-
-export default Page;
+export default getAllProducts;
