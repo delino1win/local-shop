@@ -5,6 +5,7 @@ import isRole from "@/utils/checkUserRoles";
 import bcrypt from "bcrypt";
 import { UUID } from "mongodb";
 
+
 export async function GET () {
     await connectMongoDataBase();
     const userFound = await User.find();
@@ -18,14 +19,22 @@ export async function GET () {
 
 export async function POST (request: Request) {
     await connectMongoDataBase();
-    const {email, userRole, username, password} = await request.json();
+    const {firstName, lastName, email, userRole, username, phoneNumber, address, password}: User = await request.json();
     const userId = new UUID();
-    console.log(isRole(userRole));
+    // console.log(isRole(userRole));
+
+    if(!firstName) return NextResponse.json({message: "first name required!"});
+
     if(!isRole(userRole))
         return NextResponse.json({message: "User Roles Must be Buyer or Seller"});
 
     if(!password) return NextResponse.json({message: "Password Cant be Empty"});
-    
+
+    if(!phoneNumber || phoneNumber.toString().length < 10) return NextResponse.json({message: "Phone Number Empty or the length is Wrong"});
+
+    if(!address) return NextResponse.json({message: "Address cant be empty"});
+
+
     try {
         const hashedPassword = bcrypt.hashSync(password, 10);
         const isUser = await User.findOne({username: username});
@@ -34,6 +43,10 @@ export async function POST (request: Request) {
         if(!isUser) {
             await User.create({
                 userId: userId,
+                firstName,
+                lastName,
+                phoneNumber,
+                address,
                 email, 
                 userRole,
                 username,
@@ -60,10 +73,13 @@ export async function DELETE (request: Request) {
 
     try {
         const findUsername = await User.findOne({_id: String(findId)});
-        console.log("\n is Username Found? " + findUsername);
-        console.log("\n Find ID value: " + findId);
+
+        // console.log("\n is Username Found? " + findUsername);
+        // console.log("\n Find ID value: " + findId);
+
         const isPropsId = await User.findById(findId)
-        console.log("\n ID exist ?" + isPropsId);
+        // console.log("\n ID exist ?" + isPropsId);
+
         if(!isPropsId) {
             return NextResponse.json({message: "There is no Such ID"});
         } else {

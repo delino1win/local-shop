@@ -5,7 +5,17 @@ const userSchema = new Schema<User>({
         unique: true,
         required: true,
         type: String
-    },  
+    }, 
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    phoneNumber: {
+        required: true,
+        type: Number
+    },
     email: {
         type: String,
         required: true
@@ -13,6 +23,10 @@ const userSchema = new Schema<User>({
     userRole: {
         type: String,
         required: true,
+    },
+    address: {
+        type: String,
+        required: true
     },
     username: {
         type: String,
