@@ -11,7 +11,7 @@ const SidebarMenuSeller = () => {
   }
 
   return (
-    <div className="ml-2 py-2 rounded-lg bg-zinc-100">
+    <div className="ml-2 py-2 rounded-lg bg-zinc-100 max-sm:hidden">
       <button className={`${isOpen ? "shadow-lg rounded-md": ""} flex justify-between p-1 mx-2 min-w-24 w-52 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-slate-300 focus:rounded-lg focus:font-bold hover:font-semibold`} onClick={onOpen}>
         <label>Product</label>
         <label className={`${isOpen ? "opacity-0 invisible" : ""}text-xs mt-1 font-semibold`}>see details</label>

@@ -21,15 +21,18 @@ export default function RootLayout({ children }: Readonly<{
   return (
     <html lang="en">
       <body className={inter.className}>
-          <AuthProvider>
+        <section className="container">
+        <AuthProvider>
             <NavBar />
-              <div className="min-h-screen w-full flex">
+              <div className="min-h-screen w-screen md:flex max-sm:max-w-[425px]">
                 <Sidebar />
-                <div className="mx-24 rounded-lg min-w-[450px] flex-1 bg-sky-50">
+                <div className="mx-24 rounded-lg md:flex-1 bg-sky-50 max-sm:mx-3 max-sm:text-xs">
                   {children}
                 </div>
               </div>
           </AuthProvider>
+        </section>
+          
           
       </body>
     </html>

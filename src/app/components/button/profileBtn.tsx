@@ -19,7 +19,7 @@ export default function ProfileBtn() {
   if (!session?.user) return (
     <div className="flex mt-2 justify-center text-sm">
       <button className="px-2 mr-1 bg-blue-100 rounded-lg border-r-2 border-slate-800 transition-all duration-150 hover:font-bold">
-        <Link href="/api/auth/signin">Login</Link>
+        <Link href="/api/auth/signin">Login</Link> 
       </button>
       <button className="px-2 bg-blue-100 rounded-lg border-l-2 border-slate-800 transition-all duration-150 hover:font-bold">
         <Link href="/registerPage">Registration</Link>

@@ -23,13 +23,13 @@ const NavBar = async () => {
     const session = await getServerSession(options)
 
     return (
-        <nav className="p-5 space-x-56 sticky top-0 bg-blue-200">
-            <div className="flex justify-between align-middle">
-                <div className="mx-16 mt-2 hover:font-bold">
+        <nav className="p-5 space-x-56 sticky top-0 bg-blue-200 w-screen ">
+            <div className="flex justify-between align-middle max-sm:text-sm">
+                <div className=" mt-2 hover:font-bold">
                     <Link href="/">HOME</Link>
                 </div>
                 
-                <div className="flex">
+                <div className="flex max-sm:flex-row">
                     <div className="mt-1 mx-4">
                     <CartBtn />
                     </div>
