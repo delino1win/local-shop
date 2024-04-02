@@ -31,7 +31,6 @@ export async function POST (request: Request) {
     if(!password) return NextResponse.json({message: "Password Cant be Empty"});
 
     if(!phoneNumber || phoneNumber.toString().length < 10) return NextResponse.json({message: "Phone Number Empty or the length is Wrong"});
-
     if(!address) return NextResponse.json({message: "Address cant be empty"});
 
 

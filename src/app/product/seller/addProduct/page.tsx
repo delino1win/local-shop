@@ -132,7 +132,7 @@ export default function AddProductForm() {
     <section className="flex justify-center">
       <form
         onSubmit={handler}
-        className="grid grid-cols-1 shadow-sm ring-2 divide-y-4 divide-slate-400/25 space-y-3 p-3 mt-20 w-5/12"
+        className="flex flex-col shadow-sm ring-2 divide-y-4 divide-slate-400/25 space-y-3 p-3 mt-20 w-5/12"
       >
         <input
           value={productName}

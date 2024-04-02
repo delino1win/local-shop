@@ -23,7 +23,7 @@ const NavBar = async () => {
     const session = await getServerSession(options)
 
     return (
-        <nav className="p-5 space-x-56 sticky top-0 bg-blue-200 w-screen ">
+        <nav className="p-5 space-x-56 sticky top-0 bg-blue-200 w-full border-b-2 border-b-slate-400 shadow-lg max-sm:max-w-full">
             <div className="flex justify-between align-middle max-sm:text-sm">
                 <div className=" mt-2 hover:font-bold">
                     <Link href="/">HOME</Link>
