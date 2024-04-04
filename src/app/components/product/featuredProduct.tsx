@@ -12,54 +12,43 @@ const FeaturedProduct = ({
   // if(!session) return
 
   return (
-    <div>
+    <div className="flex">
+    <div className="grid grid-cols-4 shrink-0">
       {listProduct.map((props: ProductWithUsername) => (
         <div
-          className="shadow-md w-60 m-2 border-2 rounded-md"
+          className="shadow-md m-2 ring-1 ring-blue-200 rounded-md shrink-0 w-[200px] max-h-[320px] overflow-hidden hover:shadow-md hover:shadow-blue-50 transition-all duration-200 ease-in-out"
           key={props.userId}
         >
           <Link href={`http://localhost:3000/product/${props._id}`}>
-            <div>
-              <img
-                className="h-75 w-75 p-5"
+            <div className="flex flex-col">
+                <img
+                className="h-[160px]"
                 src={props.images[0]}
                 alt={props.productName}
               />
-            </div>
-            <div className="p-2 flex-nowrap overflow-hidden">
-              <ul>
-                <li>
-                  <b>Seller</b>: {props?.user?.username}
-                </li>
-                <li>
-                  <b>Product Name: </b>
-                  {props.productName}
-                </li>
-                <li>
-                  <b>Price: $</b>
-                  {props.price}
-                </li>
-                <li>
-                  <b>Item available: </b>
-                  {props.inventory}
-                </li>
-                <li>
-                  <b>Brand: </b>
-                  {props.brand}
-                </li>
-                <li>
-                  <b>Categories: </b>
-                  {props.categories.join(", ")}
-                </li>
-                <li>
-                  <b>Description: </b>
-                  {props.description}
-                </li>
-              </ul>
+              <div className="bg-blue-200 h-[160px] flex flex-col p-1 text-sm text-cyan-800 space-y-3">
+                <div className="flex flex-row justify-end">
+                    <label className="bg-slate-400 rounded-s-lg px-1 -mr-1 -mt-1 font-light">
+                    available: {props?.inventory}</label>
+                </div>
+                <div className="text-wrap font-light">
+                    {props?.productName}
+                </div>
+                <div className="flex flex-col py-4 rounded-md px-2">
+                <div className="text-base font-semibold">
+                    Rp. {props?.price}
+                </div>
+                <div>
+                    <i>{props?.user?.username}</i>
+                </div>
+                </div>
+                
+            </div>            
             </div>
           </Link>
         </div>
       ))}
+      </div>
     </div>
   );
 };

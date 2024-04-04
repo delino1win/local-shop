@@ -18,7 +18,9 @@ const getAllProduct = async () => {
 const Page = async () => {
     const allProductList = await getAllProduct()
  return(
-    <FeaturedProduct listProduct={allProductList} />
+    <div> 
+        <FeaturedProduct listProduct={allProductList} />
+    </div>
  )
 }
 
