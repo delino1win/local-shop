@@ -22,7 +22,7 @@ const FeaturedProduct = ({
           <Link href={`http://localhost:3000/product/${props._id}`}>
             <div className="flex flex-col">
                 <img
-                className="h-[160px]"
+                className="object-contain h-[160px]"
                 src={props.images[0]}
                 alt={props.productName}
               />
