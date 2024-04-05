@@ -90,7 +90,7 @@ export default function AddProductForm() {
         });
       console.log("INI GAMBAR bos", images);
       const res = await fetch(
-        "http://localhost:3000/api/product/seller/addProduct",
+        "/api/product/seller/addProduct",
         {
           method: "POST",
           headers: {
