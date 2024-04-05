@@ -17,7 +17,7 @@ export async function GET () {
     //  console.log("session ID: ", sessionId)
 
     try {
-        const products = await Product.find({userId: session.user.id})
+        const products = await Product.find({userId: session?.user?.id})
         // for(const product of products){
         //     product.userId = new mongoose.Types.ObjectId(String(product.userId))
         //     await product.save()

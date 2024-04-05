@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const getProduct = async () => {
     try {
-        const res = await fetch("http://localhost:3000/api/product/seller/list", {
+        const res = await fetch("/api/product/seller/list", {
             cache: "no-store",
         });
 
@@ -23,7 +23,7 @@ const getProduct = async () => {
 
 const deleteProduct = async (productId: string) => {
     try {
-        const res = await fetch(`http://localhost:3000/api/product/seller/deleteProduct?id=${productId}`, {
+        const res = await fetch(`/api/product/seller/deleteProduct?id=${productId}`, {
             method: "DELETE"
         });
 
