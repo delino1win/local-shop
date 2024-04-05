@@ -2,8 +2,10 @@ import FeaturedProduct from "./components/product/featuredProduct";
 
 
 const getAllProduct = async () => {
+    const baseUrl = process.env.NEXTAUTH_URL as string
+    if(!baseUrl) return 
     try {
-        const res = await fetch(`${process.env.BASE_URL as string}/api/product`, {
+        const res = await fetch(`${baseUrl}/api/product`, {
             cache: "no-store"
         });
         if(!res.ok) return
