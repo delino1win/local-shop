@@ -1,25 +1,29 @@
+import connectMongoDataBase from "@/libs/mongodb";
 import FeaturedProduct from "./components/product/featuredProduct";
+import Product from "@/models/product";
+import { NextResponse } from "next/server";
 
 
 const getAllProduct = async () => {
-    const baseUrl = process.env.NEXTAUTH_URL as string
-    if(!baseUrl) return 
+    await connectMongoDataBase()
     try {
-        const res = await fetch(`${baseUrl}/api/product`, {
-            cache: "no-store"
-        });
-        if(!res.ok) return
-
-        const allProductList = await res.json();
-        return allProductList
+        const productList = await Product.find().populate<{user : {username : string}}>({
+            path: 'user',
+            options : {
+                select : '_id username'
+            }
+        }).lean()
+        return productList as ProductWithUsername[];
     } catch (error) {
         console.log(error)
-        return [] 
+        return NextResponse.json({error : true, message : String(error)}, {status : 500});
     }
 }
 
 const Page = async () => {
-    const allProductList = await getAllProduct()
+    const allProductList = await getAllProduct() as ProductWithUsername[]
+
+    if(!allProductList) return null
  return(
     <div> 
         <FeaturedProduct listProduct={allProductList} />
