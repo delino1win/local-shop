@@ -21,7 +21,7 @@ export async function GET () {
         // for(const product of products){
         //     product.userId = new mongoose.Types.ObjectId(String(product.userId))
         //     await product.save()
-        // }
+    // }
 
         if(!products) return NextResponse.json({message: "Product List by Seller is empty"})
         console.log("product list by id: ", products)

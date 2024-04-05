@@ -1,8 +1,9 @@
 import FeaturedProduct from "./components/product/featuredProduct";
 
+
 const getAllProduct = async () => {
     try {
-        const res = await fetch("http://localhost:3000/api/product", {
+        const res = await fetch(`${process.env.BASE_URL as string}/api/product`, {
             cache: "no-store"
         });
         if(!res.ok) return
