@@ -19,7 +19,7 @@ const FeaturedProduct = ({
           className="shadow-md m-2 ring-1 ring-blue-200 rounded-md shrink-0 w-[200px] max-h-[320px] overflow-hidden hover:shadow-md hover:shadow-blue-50 transition-all duration-200 ease-in-out"
           key={props.userId}
         >
-          <Link href={`http://localhost:3000/product/${props._id}`}>
+          <Link href={`/product/${props._id}`}>
             <div className="flex flex-col">
                 <img
                 className="object-contain h-[160px]"
