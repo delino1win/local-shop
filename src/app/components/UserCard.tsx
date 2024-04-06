@@ -6,11 +6,12 @@ type Props = {
 }
 
 export default function UserCard({user}: Props) {
+
     const information = user? (
         <div>
             <h2>Welcome, <b>{user?.name}</b></h2>
-            <p>id : {user.id}</p>
             <h2>Role: {user.role}</h2>
+
         </div>) : (<h3>You need to login first</h3>)
 
     const userImage = user?.image ? (

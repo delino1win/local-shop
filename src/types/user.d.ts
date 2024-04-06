@@ -1,4 +1,6 @@
 interface User {
+    image: string | StaticImport
+    image: any
     userId: string
     email: string
     userRole: string
@@ -7,6 +9,7 @@ interface User {
     phoneNumber: number
     address: string
     username: string
+    balanceAmount: number
     password: string
 }
 

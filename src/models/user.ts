@@ -13,7 +13,6 @@ const userSchema = new Schema<User>({
         type: String
     },
     phoneNumber: {
-        required: true,
         type: Number
     },
     email: {
@@ -26,12 +25,14 @@ const userSchema = new Schema<User>({
     },
     address: {
         type: String,
-        required: true
     },
     username: {
         type: String,
-        required: true,
-        unique: true
+        required: true
+    },
+    balanceAmount: {
+        type: Number,
+        required: true
     },
     password: {
         type: String,

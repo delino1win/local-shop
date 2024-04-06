@@ -11,7 +11,7 @@ export async function GET () {
         if(!isUserExist.length) {
             return NextResponse.json({message: "User List Does Not Exist"})
         } else {
-            return NextResponse.json({userList: isUserExist });
+            return NextResponse.json(isUserExist);
         }
     } catch (error) {
         return NextResponse.json(error);

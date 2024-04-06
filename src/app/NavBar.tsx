@@ -4,7 +4,7 @@ import Link from "next/link";
 import CartBtn from "./components/button/cartBtn";
 import { options } from "./api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth/next";
-
+import getUserDetail from "@/utils/getUserDetail";
 
 // const navBarProps = {
 //     prop1: <Link href="/featuredproduct">HOME</Link>,
@@ -19,9 +19,8 @@ import { getServerSession } from "next-auth/next";
                 ))} */}
 
 const NavBar = async () => {
-
     const session = await getServerSession(options)
-
+    const profile =  await getUserDetail(session?.user?.id)
     return (
         <nav className="p-5 space-x-56 sticky top-0 bg-blue-200 w-full border-b-2 border-b-slate-400 shadow-lg max-sm:max-w-full">
             <div className="flex justify-between align-middle max-sm:text-sm">
@@ -31,10 +30,15 @@ const NavBar = async () => {
                 
                 <div className="flex max-sm:flex-row">
                     <div className="mt-1 mx-4">
-                    <CartBtn />
+                    {session?.user && session?.user?.role === "buyer" && (
+                        <div className="flex flex-row gap-2">
+                            <CartBtn />
+                            <div className="text-lg text-green-900 font-light bg-slate-500 rounded-2xl px-2">Rp. {profile?.balanceAmount}</div>
+                        </div>
+                    )}
                     </div>
                         <ProfileBtn />
-                </div>  
+                </div>
                 
             </div>
             

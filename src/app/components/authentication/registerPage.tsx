@@ -14,6 +14,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState<User["password"]>("");
   const [confPass, setConfPass] = useState<User["password"]>("");
   const [userRole, setRole] = useState<User["userRole"]>("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { data: session } = useSession();
   const route = useRouter();
@@ -21,15 +22,15 @@ const RegisterPage = () => {
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (confPass !== password) {
-      alert("Password = Conf");
-      return;
-    }
+    // if (confPass !== password) {
+    //   alert("Password = Conf");
+    //   return;
+    // }
 
-    if (!userRole) {
-      alert("Role cant be empty");
-      return;
-    }
+    // if (!userRole) {
+    //   alert("Role cant be empty");
+    //   return;
+    // }
 
     try {
       const res = await fetch("/api/register", {
@@ -50,7 +51,8 @@ const RegisterPage = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed!!");
+        setErrors(await res.json())
+        // console.log(errors)
       } else {
         await alert("Success Registration");
         await route.push("/");
@@ -75,9 +77,12 @@ const RegisterPage = () => {
         >
           <div className="grid grid-cols-2 bg-transparent py-2 rounded-lg border-2 border-gray-200">
             <div className="grid grid-row-2 ml-2">
-              <label className="font-extrabold text-xs" htmlFor="firstName">
-                First Name*
+                <div className="flex flex-row gap-2">
+                <label className="font-extrabold text-xs" htmlFor="firstName">
+                First Name
               </label>
+              {errors && (<p className="text-xs text-red-400">{errors?.firstName}</p>)}
+                </div>
               <input
                 id="firstName"
                 value={firstName}
@@ -87,7 +92,7 @@ const RegisterPage = () => {
                 placeholder="..."
                 maxLength={20}
                 minLength={2}
-                required
+                // required
               />
             </div>
             <div className="grid grid-row-2 ml-2">
@@ -108,11 +113,14 @@ const RegisterPage = () => {
           </div>
 
           <div className="grid grid-cols-2">
-            <div className="">
+            <div>
               <div className="grid grid-rows-2 bg-transparent py-2 rounded-lg border-2 pl-2">
-                <label className="font-bold text-xs" htmlFor="email">
-                  Email*
-                </label>
+              <div className="flex flex-row gap-2">
+                <label className="font-extrabold text-xs" htmlFor="email">
+                Email
+              </label>
+              {errors && (<p className="text-xs text-red-400">{errors?.email}</p>)}
+                </div>
                 <input
                   id="email"
                   value={email}
@@ -122,14 +130,18 @@ const RegisterPage = () => {
                   placeholder="..."
                   maxLength={32}
                   minLength={10}
-                  required
+                  // required
                 />
+
               </div>
 
               <div className="grid grid-rows-2 bg-transparent py-2 rounded-lg border-2 pl-2">
-                <label className="font-bold text-xs" htmlFor="username">
-                  Username*
-                </label>
+              <div className="flex flex-row gap-2">
+                <label className="font-extrabold text-xs" htmlFor="username">
+                First Name*
+              </label>
+              {errors && (<p className="text-xs text-red-400">{errors?.username}</p>)}
+                </div>
                 <input
                   id="username"
                   value={username}
@@ -139,7 +151,7 @@ const RegisterPage = () => {
                   placeholder="..."
                   maxLength={20}
                   minLength={4}
-                  required
+                  // required
                 />
               </div>
             </div>
@@ -185,7 +197,7 @@ const RegisterPage = () => {
                 }
                 className="m-w-[100px] w-[96%] text-sm font-semibold focus:outline-none bg-transparent border-b-2 border-gray-300 focus:border-indigo-400 transition-all duration-300 ease-in-out"
                 type="number"
-                required
+                // required
                 placeholder="+62 or 08 ..."
                 maxLength={16}
                 minLength={9}
@@ -219,7 +231,7 @@ const RegisterPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
                 className="m-w-[100px] w-[96%] text-sm font-semibold focus:outline-none bg-transparent border-b-2 border-gray-300 focus:border-indigo-400 transition-all duration-300 ease-in-out"
                 type="password"
-                required
+                // required
                 placeholder="****"
                 maxLength={50}
                 minLength={6}
@@ -236,7 +248,7 @@ const RegisterPage = () => {
                 onChange={(event) => setConfPass(event.target.value)}
                 className="m-w-[100px] w-[96%] text-sm font-semibold focus:outline-none bg-transparent border-b-2 border-gray-300 focus:border-indigo-400 transition-all duration-300 ease-in-out"
                 type="password"
-                required
+                // required
                 placeholder="****"
                 maxLength={50}
                 minLength={6}
