@@ -20,7 +20,7 @@ export async function GET () {
         const checkBuyerCart = await BuyerCart.find({buyerId: session?.user?.id})
         console.log("check buyer cart: ",checkBuyerCart)
         
-        const listCart: Product & User = await BuyerCart.find({buyerId: session?.user?.id}).populate<Product>({
+        const listCart: {listCart : Product & User} = await BuyerCart.find({buyerId: session?.user?.id}).populate<Product>({
         path: 'product',
             options: {
                 select: 'userId productName inventory price images',

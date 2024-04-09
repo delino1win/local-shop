@@ -4,10 +4,10 @@ import {params} from "next-auth/redirect"
 
 declare module "next-auth" {
     interface Session {
-        user: {
-            id: string,
+        user?: {
+            id?: string,
             role: string,
-            username: string
+            username?: string
         } & DefaultSession
     }
 
@@ -19,8 +19,8 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
     interface JWT extends DefaultJWT {
-        id: string,
-        name: string,
+        id?: string,
+        name?: string,
         role: string
     }
 }

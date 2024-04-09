@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import connectMongoDataBase from "@/libs/mongodb";
 import User from "@/models/user";
 import { GithubProfile } from "next-auth/providers/github";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // untuk type
 export const options: NextAuthOptions = {

@@ -35,9 +35,6 @@ const RegisterPage = () => {
     try {
       const res = await fetch("/api/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           firstName,
           lastName,
@@ -54,8 +51,9 @@ const RegisterPage = () => {
         setErrors(await res.json())
         // console.log(errors)
       } else {
-        await alert("Success Registration");
-        await route.push("/");
+        const data = await res.json()
+
+        route.push(`/registerPage/activation?confirmId=${data.confirmId}`)
       }
     } catch (error) {
       console.log(error);
@@ -73,7 +71,6 @@ const RegisterPage = () => {
           onSubmit={handler}
           className="grid grid-cols-1 gap-1 min-w-[400px] w-[650px] text-lg border-2 p-1 rounded-lg bg-slate-50 shadow-md"
           method="POST"
-          action="/"
         >
           <div className="grid grid-cols-2 bg-transparent py-2 rounded-lg border-2 border-gray-200">
             <div className="grid grid-row-2 ml-2">
@@ -138,7 +135,7 @@ const RegisterPage = () => {
               <div className="grid grid-rows-2 bg-transparent py-2 rounded-lg border-2 pl-2">
               <div className="flex flex-row gap-2">
                 <label className="font-extrabold text-xs" htmlFor="username">
-                First Name*
+                Username*
               </label>
               {errors && (<p className="text-xs text-red-400">{errors?.username}</p>)}
                 </div>

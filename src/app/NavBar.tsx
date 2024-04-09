@@ -20,7 +20,8 @@ import getUserDetail from "@/utils/getUserDetail";
 
 const NavBar = async () => {
     const session = await getServerSession(options)
-    const profile =  await getUserDetail(session?.user?.id)
+
+    const profile =  await getUserDetail(session?.user?.id) as {profile?: string}
     return (
         <nav className="p-5 space-x-56 sticky top-0 bg-blue-200 w-full border-b-2 border-b-slate-400 shadow-lg max-sm:max-w-full">
             <div className="flex justify-between align-middle max-sm:text-sm">
