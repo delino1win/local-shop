@@ -71,6 +71,7 @@ const RegisterPage = () => {
           onSubmit={handler}
           className="grid grid-cols-1 gap-1 min-w-[400px] w-[650px] text-lg border-2 p-1 rounded-lg bg-slate-50 shadow-md"
           method="POST"
+          action="/"
         >
           <div className="grid grid-cols-2 bg-transparent py-2 rounded-lg border-2 border-gray-200">
             <div className="grid grid-row-2 ml-2">

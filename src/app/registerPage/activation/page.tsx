@@ -8,6 +8,6 @@ export default function ActivationPage ({searchParams } : {searchParams: {confir
   if (!confirmId || typeof confirmId !== 'string') return redirect('/') 
 
     return (
-      <ActivationForm />
+      <ActivationForm confirmId={confirmId}/>
     )
 } 

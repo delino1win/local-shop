@@ -188,7 +188,7 @@ export async function POST (request: Request) {
             });
 
             return NextResponse.json({
-                confirmId: tempUser.id
+                confirmId: tempUser.userId
             });
         }
         
