@@ -25,7 +25,7 @@ export default function ActivationForm ({confirmId} : {confirmId: string}) {
       if(!res.ok) {
         setErrorMessage(await res.json())
       } else {
-        router.push(`/`)
+        router.push(`/api/auth/signin`)
       }
 
       
@@ -38,11 +38,12 @@ export default function ActivationForm ({confirmId} : {confirmId: string}) {
   return (
     <div>
       <form onSubmit={submitHandler} method="POST">
-        <div>
-          <input value={otp} onChange={(event) => setOtp(event.target.value)} type="text" minLength={1} maxLength={6}/>
+        <div className="flex flex-col">
+          <label className="font-semibold">Please Insert OTP that has been sent to your Email. 3 minutes Remaining.</label>
+          <input value={otp} onChange={(event) => setOtp(event.target.value)} type="text" minLength={5} maxLength={5}/>
           <button type="submit">Submit</button>
           {errorMessage && (
-            <label>{errorMessage}</label>
+            <label> {errorMessage} </label>
           )}
         </div>
         
