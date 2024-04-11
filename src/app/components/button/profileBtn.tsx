@@ -42,7 +42,7 @@ export default function ProfileBtn() {
         // <UserCard user={} />
         <>
           <div className="bg-gray-200 absolute top-22 flex flex-col rounded-lg right-5">
-            <UserCard user={session?.user} />
+            <UserCard user={session.user} />
             <Link
               className="bg-gray-100 mt-4 text-lg text-center hover:font-bold transition-all duration-200"
               href="/api/auth/signout"
