@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import Profiler from "./components/navbar/profiler";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
+import Profiler from "./components/navbar/profiler";
 
 // const navBarProps = {
 //     prop1: <Link href="/featuredproduct">HOME</Link>,
