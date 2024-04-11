@@ -10,7 +10,7 @@ export async function GET () {
 
     const session = await getServerSession(options)
 
-    if(!session) return null
+    if(!session) return
 
     try {
         
@@ -20,9 +20,9 @@ export async function GET () {
 
         console.log("getUser: ", getUser)
 
-        return NextResponse.json(getUser)
+        return NextResponse.json({...getUser})
         
     } catch (error) {
-        return NextResponse.json(error);
+        console.log(error)
     }
 };
