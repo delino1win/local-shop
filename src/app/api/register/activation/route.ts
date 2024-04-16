@@ -10,8 +10,7 @@ export async function POST (request: Request) {
 
   const {otp, confirmId} = await request.json()
 
-  
-  console.log("confId: ", confirmId + " otp: ", otp)
+  // console.log("confId: ", confirmId + " otp: ", otp)
 
   try {
     const tempUserDetail = await TemporaryUser.findOne({userId: confirmId}).lean() as TemporaryUser
@@ -26,7 +25,6 @@ export async function POST (request: Request) {
       ...tempUserDetail.data,
       userId: tempUserDetail.userId,
       balanceAmount: 0
-      
     })
 
     await TemporaryUser.deleteMany({
