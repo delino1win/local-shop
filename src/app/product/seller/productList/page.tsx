@@ -11,7 +11,7 @@ const getProducts = async (sessionId: string) => {
     try {
         await connectMongoDataBase()
 
-        const products = await Product.find({userId: sessionId}).lean()
+        const products = await Product.find({userId: sessionId})
 
         if(!products) return
 

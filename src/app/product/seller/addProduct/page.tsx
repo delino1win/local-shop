@@ -19,6 +19,7 @@ export default function AddProductForm() {
   // console.log("\nadd product: ", session?.user.id);
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     const formData = new FormData();
 
     try {
@@ -48,12 +49,9 @@ export default function AddProductForm() {
       if(!res.ok) {
         alert("Res not OK!")
         // setErrors(await res.json())
-      } else {
-        console.log("res:", res)
-        router.push("/product/seller/productlist")
       }
-
-
+        // window.location.replace('/product/seller/productList')
+        router.replace('/product/seller/productList')
     } catch (error) {
       console.log(error);
     }

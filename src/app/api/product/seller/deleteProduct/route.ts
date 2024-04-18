@@ -14,7 +14,7 @@ export async function DELETE (request: NextRequest) {
         const deleteById = await Product.findByIdAndDelete(id)
 
         if (!deleteById) {
-            return NextResponse.json({ error: "No product found with this ID." }, { status: 404 });
+            return NextResponse.json({ error: "No product found with this ID." }, { status: 400 });
         }
 
         return NextResponse.json({message: `Delete ID ${deleteById} successful`})

@@ -7,8 +7,6 @@ import { useRouter } from "next/navigation";
 
 const ProductList = ({products} : {products: Product[]}) => {
 
-    const router = useRouter()
-
     if(!products) return <>No product List</>
 
     const deleteProduct = async (productId: string) => {
@@ -21,8 +19,8 @@ const ProductList = ({products} : {products: Product[]}) => {
             if (!res.ok) {
                 throw new Error(`Failed to delete product. Status: ${res.status}`);
             }
-    
-            router.push("/product/seller/productlist");
+
+            window.location.reload()
         } catch (error) {
             console.log("Delete Product Error: ", error);
         }
