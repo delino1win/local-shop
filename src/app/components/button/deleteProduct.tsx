@@ -1,18 +1,23 @@
+"use client"
 import { headers } from "next/headers";
+import { useRouter } from "next/navigation";
 import React from "react"
 
-const DeleteProduct = ({productId} : any) => {
+const DeleteProduct = ({productId} : {productId: string}) => {
 
-    console.log("Clicked!")
+    const router = useRouter()
+
     async function deleteHandler () {
         try {
                 const res = await fetch(`https://localhost:3000/api/product/deleteProduct?id=${productId}`, {
                 headers: headers()
             })
 
-            if(!res.ok) return
+            if(!res.ok) {
+                throw new Error("Error")
+            } 
     
-            return window.location.replace("/product/productList");
+            router.replace("/product/seller/productlist");
         } catch (error) {
             console.log("error")
         }

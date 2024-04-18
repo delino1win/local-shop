@@ -11,10 +11,11 @@ export async function GET () {
 
     const session = await getServerSession(options);
     // console.log("session id:", session?.user.id)
+
     if(!session) return NextResponse.json({error : "Unauthenticated"}, {status : 401})
     
     //  const sessionId = new mongoose.Types.ObjectId(String(session.user.id))
-    //  console.log("session ID: ", sessionId)
+     console.log("session: ", session)
 
     try {
         const products = await Product.find({userId: session?.user?.id})

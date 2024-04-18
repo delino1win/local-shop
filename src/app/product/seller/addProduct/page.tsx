@@ -1,16 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function AddProductForm() {
   const [productName, setProductName] = useState<Product["productName"]>("");
   const [brand, setBrand] = useState<Product["brand"]>("");
   const [description, setDescription] = useState<Product["description"]>("");
-  const [price, setPrice] = useState<Product["price"]>();
-  const [inventory, setInventory] = useState<Product["inventory"]>();
+  const [price, setPrice] = useState<Product["price"]>(0);
+  const [inventory, setInventory] = useState<Product["inventory"]>(0);
   const [categories, setCategories] = useState<Product["categories"]>([]);
   const [images, setImages] = useState<File[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({})
   // const [imageCollection, setImageCollection] = useState<string[] | File[] | null>([])
 
   const router = useRouter();
@@ -18,29 +19,41 @@ export default function AddProductForm() {
   // console.log("\nadd product: ", session?.user.id);
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    const formData = new FormData();
+
     try {
+        if(session?.user?.id) formData.append('userId', session?.user?.id)
+        formData.append('productName', productName)
+        formData.append('brand', brand)
+        formData.append('description', description)
+        
+        formData.append('price', String(price))
+        formData.append('inventory', String(inventory))
+        for (const img of images ?? []) {
+          formData.append('images[]', img)
+        }
+
+        for(const category of categories ?? []) {
+          formData.append('categories[]', category)
+        }
+
       const res = await fetch("/api/product/seller/addProduct", {
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: session?.user?.id,
-          productName,
-          brand,
-          description,
-          categories,
-          price,
-          inventory,
-        }),
+        // headers: {
+        //   "Content-Type": "multipart/formdata"
+        // },
+        body: formData,
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to add new product");
+      if(!res.ok) {
+        alert("Res not OK!")
+        // setErrors(await res.json())
       } else {
-        window.location.replace("/product/seller/productList");
+        console.log("res:", res)
+        router.push("/product/seller/productlist")
       }
+
+
     } catch (error) {
       console.log(error);
     }
@@ -105,6 +118,7 @@ export default function AddProductForm() {
             onChange={(event) => setProductName(event.target.value)}
             placeholder=" . . ."
             type="text"
+            required
           />
         </div>
 
@@ -174,6 +188,8 @@ export default function AddProductForm() {
             onChange={(event) => setPrice(parseFloat(event.target.value))}
             placeholder=" . . ."
             type="number"
+            required
+            min={1}
           />
         </div>
 
@@ -185,6 +201,8 @@ export default function AddProductForm() {
             onChange={(event) => setInventory(parseFloat(event.target.value))}
             placeholder=" . . ."
             type="number"
+            required
+            min={1}
           />
         </div>
 
@@ -195,7 +213,7 @@ export default function AddProductForm() {
               <div className="relative p-2 shrink-0" key={idx}>
                 <div>
                   <img
-                    className="h-[100px] w-[120px]"
+                    className="h-[100px] w-[120px] object-contain"
                     src={URL.createObjectURL(image)}
                     alt={`img ${idx}`}
                   />
@@ -216,6 +234,13 @@ export default function AddProductForm() {
             onChange={imageHandler}
           />
           
+        </div>
+
+        <div>
+          <label>Your Thumbnail Product: </label>
+          {images.length > 0 && (
+            <img className="h-[120px] w-[150px]" src={URL.createObjectURL(images[0])} />
+          )}
         </div>
 
         <button
