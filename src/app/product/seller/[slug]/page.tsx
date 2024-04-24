@@ -1,47 +1,33 @@
-"use client"
-import React, { useState, useEffect } from "react";
-import getProductDetail from "@/utils/getProductDetail";
-import Link from "next/link";
+import Product from "@/models/product";
+import SellerProdDetail from "./_sellerProductDetail";
+import connectMongoDataBase from "@/libs/mongodb";
 
-const Page = ({ params } : {params : {slug : string}}) => {
+const getProductDetail = async (slug: string) => {
+    await connectMongoDataBase()
+    try {
+        const productDetail = await Product.findOne({_id: slug}).lean()
 
-    const {slug} = params;
-    const [productDetail, setProductDetail] = useState<Product>();
+        if(!productDetail) return 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getProductDetail(slug)
-            setProductDetail(data)
-        }
-        fetchData()
-     }, [])
+        return productDetail
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-    if(!productDetail) return
+export default async function Page ({ params }: { params: { slug: string } }) {
+
+    const { slug } = params
+
+    const productDetail = await getProductDetail(slug)
+
+    // console.log("product detail:", productDetail)
+
+    if(!productDetail) return ""
 
     return (
         <>
-                <section className="flex justify-center">
-                    <div className="flex-col space-y-4">
-                    <ul>
-                        {productDetail.images.map((i: string, index: number) => (
-                            <div key={index}>
-                                <img height={50} width={50} src={i} alt="detail image"/>
-                            </div>
-                        ))}
-                        
-                        <li>Name of the Product: {productDetail?.productName}</li>
-                        <li>Product Description: {productDetail?.description}</li>
-                        <li>Product Price: {productDetail?.price}</li>
-                        <li>Product Amount: {productDetail?.inventory}</li>
-                        <li>Product Image: {productDetail?.brand}</li>
-                    </ul>
-                        <Link href={`/product/seller/updateProduct/${slug}`} >Update</Link>
-                        <div>===============================================</div>
-                    </div>
-                </section>
+            <SellerProdDetail productDetail={productDetail}/>
         </>
-        
-    );
+    )
 }
-
-export default Page;

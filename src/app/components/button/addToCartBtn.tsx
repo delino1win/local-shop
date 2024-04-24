@@ -2,6 +2,7 @@
 import Product from "@/models/product";
 import User from "@/models/user";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface CartProduct extends Product {sellerUsername: string}
@@ -9,6 +10,7 @@ interface CartProduct extends Product {sellerUsername: string}
 const AddToCartBtn = ({ props }: { props: CartProduct}) => {
   // const [cartStatus, setCartStatus] = useState<boolean>(false);
   const {data: session} = useSession()
+  const route = useRouter()
 
   const [amountItems, setAmountItems] = useState<CartProduct["inventory"]>(0);
   const [totalPrice, setTotalPrice] = useState<CartProduct["price"]>(0);
@@ -41,7 +43,7 @@ const AddToCartBtn = ({ props }: { props: CartProduct}) => {
         if(!res.ok) return window.location.replace(`/product/${props?._id}`)
 
         alert(`item ${props.productName} succsesfully added!`)
-        return window.location.replace(`/product/${props?._id}`)
+        return route.replace(`/product/${props?._id}`)
     } catch (error) {
         console.log(error)
     }

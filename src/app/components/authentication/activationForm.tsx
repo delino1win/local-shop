@@ -28,8 +28,6 @@ export default function ActivationForm ({confirmId} : {confirmId: string}) {
         router.push(`/api/auth/signin`)
       }
 
-      
-
     } catch (error) {
       console.log(error)
     }

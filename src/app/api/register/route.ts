@@ -80,7 +80,7 @@ export async function GET () {
 //         const hashedPassword = bcrypt.hashSync(password, 10);
 //         const isUser = await User.findOne({username: username});
         
-//         if(!isUser) {
+//         if(!isUser) {p
 //             await User.create({
 //                 userId: userId,
 //                 firstName,
@@ -129,10 +129,10 @@ export async function POST (request: Request) {
 
     if(!phoneNumber) {
         validations.phoneNumber = "Phone Number Required"
-    } else if(phoneNumber.toString().length <= 10) {
-        validations.phoneNumber = "Phone Number length must not less than 10"
-    } else if(phoneNumber.toString().startsWith("08" || "+62")) {
-        validations.phoneNumber = "Phone Number must must starts with 08 or +62"
+    } else if(phoneNumber.length <= 10 || phoneNumber.length >= 13) {
+        validations.phoneNumber = "min 10 number, or max 13 number"
+    } else if(!phoneNumber.startsWith("08" || "+62")) {
+        validations.phoneNumber = "Phone Number must starts with 08 or +62"
     }
 
     if(!password) {

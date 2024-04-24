@@ -1,114 +1,57 @@
 "use client";
-import React, {
-  useState,
-} from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function AddProductForm() {
   const [productName, setProductName] = useState<Product["productName"]>("");
   const [brand, setBrand] = useState<Product["brand"]>("");
   const [description, setDescription] = useState<Product["description"]>("");
-  const [price, setPrice] = useState<Product["price"]>();
-  const [inventory, setInventory] = useState<Product["inventory"]>();
+  const [price, setPrice] = useState<Product["price"]>(0);
+  const [inventory, setInventory] = useState<Product["inventory"]>(0);
   const [categories, setCategories] = useState<Product["categories"]>([]);
-  const [images, setImages] = useState<Product["images"]>([]);
-
-  const [imageUrl, setImageUrl] = useState<string>();
-  const [insertImageField, setInsertImageField] = useState<React.JSX.Element[]>(
-    []
-  );
+  const [images, setImages] = useState<File[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  // const [imageCollection, setImageCollection] = useState<string[] | File[] | null>([])
 
   const router = useRouter();
   const { data: session } = useSession();
   // console.log("\nadd product: ", session?.user.id);
 
-  /// BAGIAN GAMBAR WOI ///
-  //////
-  interface ImageField {
-    id: string;
-    value: string;
-  }
-
-  function getDefault(): ImageField {
-    return {
-      id: crypto.randomUUID(),
-      value: "",
-    };
-  }
-
-  const [imageFields, setImageFields] = useState<ImageField[]>([getDefault()]);
-
-  function imageFieldsHandler(
-    id: string,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setImageFields(
-      imageFields.map((field) => {
-        if (field.id === id) {
-          //if id n.n equals to n
-          return {
-            ...field,
-            value: e.target.value,
-          }; //Update the field that consists of id and value, with this specific syntax update the value of id n.n with the event object of the n
-        }
-        return field; //the updated field is returned
-      })
-    ); // set the updated field of id: n from {id: n, value: " "} to {id: n, value: ` event_object_of_n `}
-  }
-
-  function addImageFields() {
-    // Used for if the user add new input field
-    setImageFields([...imageFields, getDefault()]); // to set up the rest of the value of imageFields and displays it and also
-    // The new input field has identity (id) and default value of " " empty string
-  }
-
-  function deleteImageField(id: string) {
-    setImageFields(imageFields.filter((field) => field.id !== id));
-  }
-
-  function checkURLValid(_url: string) {
-    const urlRegex =
-      /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;
-    return urlRegex.test(_url);
-  }
-  ///////
-  /// BAGIAN GAMBAR WOI ///
-
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const images = imageFields
-        .filter((field) => checkURLValid(field.value))
-        .map((field) => {
-          return field.value;
-        });
-      console.log("INI GAMBAR bos", images);
-      const res = await fetch(
-        "/api/product/seller/addProduct",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: session?.user?.id,
-            productName,
-            brand,
-            description,
-            categories,
-            price,
-            inventory,
-            images,
-          }),
-        }
-      );
+    event.preventDefault()
+    const formData = new FormData();
 
-      if (!res.ok) {
-        throw new Error("Failed to add new product");
-      } else {
-        window.location.replace("/product/seller/productList");
+    try {
+        if(session?.user?.id) formData.append('userId', session?.user?.id)
+        formData.append('productName', productName)
+        formData.append('brand', brand)
+        formData.append('description', description)
+        
+        formData.append('price', String(price))
+        formData.append('inventory', String(inventory))
+        for (const img of images ?? []) {
+          formData.append('images[]', img)
+        }
+
+        for(const category of categories ?? []) {
+          formData.append('categories[]', category)
+        }
+
+      const res = await fetch("/api/product/seller/addProduct", {
+        method: "POST",
+        // headers: {
+        //   "Content-Type": "multipart/formdata"
+        // },
+        body: formData,
+      });
+
+      if(!res.ok) {
+        alert("Res not OK!")
+        // setErrors(await res.json())
       }
+        // window.location.replace('/product/seller/productList')
+        window.location.replace('/product/seller/productList')
     } catch (error) {
       console.log(error);
     }
@@ -131,7 +74,33 @@ export default function AddProductForm() {
     event.target.value = "default";
   };
 
-  //shadow-sm ring-2 divide-y-4 divide-slate-400/25 space-y-3 p-3 mt-20 w-5/12
+  //Image
+
+  const imageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    // if (event.target.files) {
+    //   if(event.target.files instanceof File) {
+    //   const files = Array.from(event.target.files);
+    //   setImages([...images, ...files]);
+    //   } else setImages([...images, ])
+    // }
+
+    if (event.target.files) {
+      const files = Array.from(event.target.files);
+
+      console.log("Images: ", images);
+
+      if (images.length > 7) return alert("Max 7");
+
+      setImages([...images, ...files]);
+    }
+  };
+
+  const removeImage = async (idx: number) => {
+    const targetImage = [...images];
+    targetImage.splice(idx, 1);
+    setImages(targetImage);
+  };
 
   return (
     <section className="flex justify-center">
@@ -142,18 +111,19 @@ export default function AddProductForm() {
         <div className="flex flex-col space-y-1">
           <label>Product Name</label>
           <input
-            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal text- focus:outline-none"
+            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal focus:outline-none"
             value={productName}
             onChange={(event) => setProductName(event.target.value)}
             placeholder=" . . ."
             type="text"
+            required
           />
         </div>
 
         <div className="flex flex-col space-y-1">
           <label>Product Brand</label>
           <input
-            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal text- focus:outline-none"
+            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal focus:outline-none"
             value={brand}
             onChange={(event) => setBrand(event.target.value)}
             placeholder=" . . ."
@@ -163,30 +133,40 @@ export default function AddProductForm() {
 
         <div className="flex flex-col space-y-1">
           <label>Product Description</label>
-          <input
+          {/* <input
             className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal text- focus:outline-none"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             placeholder=" . . ."
             type="text"
-          />
+          /> */}
+          <textarea 
+            className="bg-transparent mr-1 ring-1 ring-slate-800 h-[150px] max-h-[250px] min-h-[100px]" 
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            />
+
         </div>
 
         <div className="flex flex-col">
           <div className="flex mb-3">
             <div>Select Categories: </div>
-            <div className={`${categories.length !== 0 ? "border-b-2 border-slate-800 " : ""} space-x-3`}>
-            {categories.map((category) => {
-              return (
-                <button
-                  onClick={() => removeCategory(category)}
-                  className="bg-blue-500 px-2 py-0.5 rounded-md text-white"
-                  key={category}
-                >
-                  {category}
-                </button>
-              );
-            })}
+            <div
+              className={`${
+                categories.length !== 0 ? "border-b-2 border-slate-800 " : ""
+              } space-x-3`}
+            >
+              {categories.map((category) => {
+                return (
+                  <button
+                    onClick={() => removeCategory(category)}
+                    className="bg-blue-500 px-2 py-0.5 rounded-md text-white"
+                    key={category}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
             </div>
           </div>
           <select
@@ -194,10 +174,12 @@ export default function AddProductForm() {
             onChange={categoryHandler}
           >
             <option value="default">Please select category</option>
-            <option value="shirt">Shirt</option>
-            <option value="pants">Pant</option>
-            <option value="spareparts">Motor Bike`s Sparepart</option>
+            <option value="apparel">Apparel</option>
+            <option value="spareparts">Ride Spareparts</option>
             <option value="electronic">Electronic</option>
+            <option value="food">Foods</option>
+            <option value="material">Materials</option>
+            <option value="medicine">Medicine</option>
             <option value="tool">Tool</option>
           </select>
         </div>
@@ -210,6 +192,8 @@ export default function AddProductForm() {
             onChange={(event) => setPrice(parseFloat(event.target.value))}
             placeholder=" . . ."
             type="number"
+            required
+            min={1}
           />
         </div>
 
@@ -221,45 +205,46 @@ export default function AddProductForm() {
             onChange={(event) => setInventory(parseFloat(event.target.value))}
             placeholder=" . . ."
             type="number"
+            required
+            min={1}
           />
         </div>
 
-        <div className="space-y-3 pt-5">
-          <div className="font-semibold">Image Urls</div>
-          <div className="flex flex-col gap-1">
-            {imageFields.map((field) => {
-              return (
-                <div
-                  key={field.id}
-                  className={`${
-                    field.value && !checkURLValid(field.value)
-                      ? "ring-red-500 ring"
-                      : ""
-                  } flex gap-3 bg-black/5 px-2 py-1`}
-                >
-                  <input
-                    className="w-full text-slate-900 focus:outline-none bg-transparent"
-                    placeholder="Input URL`s image"
-                    onChange={(e) => imageFieldsHandler(field.id, e)}
+        <div>
+          <label>Input Your Product Photos: </label>
+          <div className="flex flex-row bg-slate-600 rounded-lg my-2 overflow-x-auto">
+            {images.map((image, idx) => (
+              <div className="relative p-2 shrink-0" key={idx}>
+                <div>
+                  <img
+                    className="h-[100px] w-[120px] object-contain"
+                    src={URL.createObjectURL(image)}
+                    alt={`img ${idx}`}
                   />
-                  <button
-                    onClick={() => deleteImageField(field.id)}
-                    type="button"
-                    className=""
-                  >
-                    x
-                  </button>
                 </div>
-              );
-            })}
+                <div
+                  className="absolute z-10 top-1 px-2 right-[5px] text-lg font-semibold text-black bg-slate-100 rounded-full hover:text-red-500 hover:font-extrabold transition-all duration-300 hover:shadow-lg"
+                  onClick={() => removeImage(idx)}
+                >
+                  X
+                </div>
+              </div>
+            ))}
           </div>
-          <button
-            type="button"
-            className="bg-blue-500 text-white px-4 py-2 rounded-xl"
-            onClick={addImageFields}
-          >
-            Add More URLs Image
-          </button>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={imageHandler}
+          />
+          
+        </div>
+
+        <div>
+          <label>Your Thumbnail Product: </label>
+          {images.length > 0 && (
+            <img className="h-[120px] w-[150px]" src={URL.createObjectURL(images[0])} />
+          )}
         </div>
 
         <button
