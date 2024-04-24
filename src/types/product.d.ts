@@ -9,7 +9,7 @@ declare global {
         description: string
         brand: string
         categories: string[]
-        price?: number
+        price: number
         inventory: number
         images: string[]
         thumbnail: string

@@ -7,8 +7,8 @@ const UpdateProduct = async ({params} : {params: Params}) => {
   const { slug } = params;
   const productDetail = await getProductDetail(slug);
 
-  console.log("slug", slug)
-  console.log("Product Detail", productDetail)
+  // console.log("slug", slug)
+  // console.log("Product Detail", productDetail)
   
 
   return (

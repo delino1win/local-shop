@@ -16,6 +16,8 @@ const RegisterPage = () => {
   const [userRole, setRole] = useState<User["userRole"]>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [isPending, setIsPending] = useState<boolean>(false)
+
   const { data: session } = useSession();
   const route = useRouter();
 
@@ -31,6 +33,7 @@ const RegisterPage = () => {
     //   alert("Role cant be empty");
     //   return;
     // }
+    setIsPending(true)
 
     try {
       const res = await fetch("/api/register", {
@@ -48,16 +51,18 @@ const RegisterPage = () => {
       });
 
       if (!res.ok) {
-        setErrors(await res.json())
-        // console.log(errors)
+        setErrors(await res.json());
+        console.log(errors)
       } else {
-        const data = await res.json()
+        const data = await res.json();
 
-        route.push(`/registerPage/activation?confirmId=${data.confirmId}`)
+        route.push(`/registerPage/activation?confirmId=${data.confirmId}`);
       }
     } catch (error) {
       console.log(error);
     }
+
+    setIsPending(false)
   };
 
   if (session?.user) {
@@ -65,22 +70,22 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="px-2 mt-20 rounded-md bg-slate-100">
+    <div className={`flex justify-center max-sm:size-fit max-lg:shrink`}>
+      <div className="px-2 mt-20 max-sm:my-8 max-sm:mt-10 rounded-md bg-slate-100">
         <form
           onSubmit={handler}
-          className="grid grid-cols-1 gap-1 min-w-[400px] w-[650px] text-lg border-2 p-1 rounded-lg bg-slate-50 shadow-md"
-          method="POST"
-          action="/"
+          className={`${isPending ? 'pointer-events-none' : 'pointer-events-auto'} grid grid-cols-1 gap-1 min-w-[310px] w-[650px] max-sm:w-[320px] max-sm:gap-2 text-lg border-2 p-1 rounded-lg bg-slate-50 shadow-md`}
         >
-          <div className="grid grid-cols-2 bg-transparent py-2 rounded-lg border-2 border-gray-200">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1 bg-transparent py-2 rounded-lg border-2 border-gray-200">
             <div className="grid grid-row-2 ml-2">
-                <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 ">
                 <label className="font-extrabold text-xs" htmlFor="firstName">
-                First Name
-              </label>
-              {errors && (<p className="text-xs text-red-400">{errors?.firstName}</p>)}
-                </div>
+                  First Name
+                </label>
+                {errors && (
+                  <p className="text-xs text-red-400">{errors?.firstName}</p>
+                )}
+              </div>
               <input
                 id="firstName"
                 value={firstName}
@@ -110,14 +115,16 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1">
             <div>
               <div className="grid grid-rows-2 bg-transparent py-2 rounded-lg border-2 pl-2">
-              <div className="flex flex-row gap-2">
-                <label className="font-extrabold text-xs" htmlFor="email">
-                Email
-              </label>
-              {errors && (<p className="text-xs text-red-400">{errors?.email}</p>)}
+                <div className="flex flex-row gap-2">
+                  <label className="font-extrabold text-xs" htmlFor="email">
+                    Email
+                  </label>
+                  {errors && (
+                    <p className="text-xs text-red-400">{errors?.email}</p>
+                  )}
                 </div>
                 <input
                   id="email"
@@ -130,15 +137,16 @@ const RegisterPage = () => {
                   minLength={10}
                   // required
                 />
-
               </div>
 
               <div className="grid grid-rows-2 bg-transparent py-2 rounded-lg border-2 pl-2">
-              <div className="flex flex-row gap-2">
-                <label className="font-extrabold text-xs" htmlFor="username">
-                Username*
-              </label>
-              {errors && (<p className="text-xs text-red-400">{errors?.username}</p>)}
+                <div className="flex flex-row gap-2">
+                  <label className="font-extrabold text-xs" htmlFor="username">
+                    Username*
+                  </label>
+                  {errors && (
+                    <p className="text-xs text-red-400">{errors?.username}</p>
+                  )}
                 </div>
                 <input
                   id="username"
@@ -182,7 +190,7 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1">
             <div className="grid grid-rows-2 bg-transparent py-2 rounded-lg border-2 pl-2">
               <label className="font-bold text-xs" htmlFor="phoneNumber">
                 Phone Number*
@@ -190,11 +198,9 @@ const RegisterPage = () => {
               <input
                 id="phoneNumber"
                 value={phoneNumber}
-                onChange={(event) =>
-                  setPhoneNumber(parseInt(event.target.value))
-                }
+                onChange={(event) => setPhoneNumber(event.target.value)}
                 className="m-w-[100px] w-[96%] text-sm font-semibold focus:outline-none bg-transparent border-b-2 border-gray-300 focus:border-indigo-400 transition-all duration-300 ease-in-out"
-                type="number"
+                type="text"
                 // required
                 placeholder="+62 or 08 ..."
                 maxLength={16}
@@ -254,11 +260,22 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          <button type="submit" className="bg-transparent font-semibold border-2 mx-[35%] my-[2%] text-xs py-4 hover:shadow-lg hover:font-extrabold hover:text-base transition-all duration-300 ease-in-out">
+          <button
+            type="submit"
+            // onClick={() => {
+            //   setIsLoading(!isLoading)
+            // }}
+            // disabled={isLoading}
+            disabled={isPending}
+            className={`bg-transparent font-semibold border-2 mx-[35%] my-[2%] text-xs py-4 hover:shadow-lg hover:font-extrabold hover:text-base transition-all duration-300 ease-in-out`}
+          >
             Sign Up
           </button>
         </form>
-        <Link className="font-semibold text-xs flex justify-center p-4 hover:font-extrabold transition-all duration-150 ease-in-out" href="/api/auth/signin">
+        <Link
+          className="font-semibold text-xs flex justify-center p-4 hover:font-extrabold transition-all duration-150 ease-in-out"
+          href="/api/auth/signin"
+        >
           Aready Have an Account? Login Here!
         </Link>
       </div>

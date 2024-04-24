@@ -9,7 +9,7 @@ declare global {
         userRole: string
         firstName: string
         lastName: string
-        phoneNumber: number
+        phoneNumber: string
         address: string
         username: string
         balanceAmount: number

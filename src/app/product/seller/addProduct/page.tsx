@@ -51,7 +51,7 @@ export default function AddProductForm() {
         // setErrors(await res.json())
       }
         // window.location.replace('/product/seller/productList')
-        router.replace('/product/seller/productList')
+        window.location.replace('/product/seller/productList')
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +111,7 @@ export default function AddProductForm() {
         <div className="flex flex-col space-y-1">
           <label>Product Name</label>
           <input
-            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal text- focus:outline-none"
+            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal focus:outline-none"
             value={productName}
             onChange={(event) => setProductName(event.target.value)}
             placeholder=" . . ."
@@ -123,7 +123,7 @@ export default function AddProductForm() {
         <div className="flex flex-col space-y-1">
           <label>Product Brand</label>
           <input
-            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal text- focus:outline-none"
+            className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal focus:outline-none"
             value={brand}
             onChange={(event) => setBrand(event.target.value)}
             placeholder=" . . ."
@@ -133,13 +133,19 @@ export default function AddProductForm() {
 
         <div className="flex flex-col space-y-1">
           <label>Product Description</label>
-          <input
+          {/* <input
             className="bg-transparent border-b-2 border-slate-800 mr-1 font-normal text- focus:outline-none"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             placeholder=" . . ."
             type="text"
-          />
+          /> */}
+          <textarea 
+            className="bg-transparent mr-1 ring-1 ring-slate-800 h-[150px] max-h-[250px] min-h-[100px]" 
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            />
+
         </div>
 
         <div className="flex flex-col">

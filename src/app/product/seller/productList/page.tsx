@@ -45,6 +45,6 @@ export default async function productList() {
     if(!products) return 
     
     return (
-    <ProductList products={products} />
+        <ProductList products={products} />
     )
 }
