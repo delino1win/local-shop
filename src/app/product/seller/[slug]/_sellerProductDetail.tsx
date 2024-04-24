@@ -10,10 +10,11 @@ const SellerProdDetailForm = ({
 }: {
   productDetail: Product;
 }) => {
-  if (!productDetail) return null;
   const [isDisable, setIsDisable] = useState<boolean>(false)
     const [deleteProps, setDeleteProps] = useState<{id: string, productName: string}>()
     const router = useRouter()
+  if (!productDetail) return null;
+  
 
   const deleteProduct = async (productId: string) => {
     try {
