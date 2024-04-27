@@ -1,38 +1,43 @@
 import DetailProduct from "@/app/components/product/detailProduct"
+import connectMongoDataBase from "@/libs/mongodb"
+import Product from "@/models/product"
+import User from "@/models/user"
 import { headers } from "next/headers"
 
 
-const getDetailProduct = async (id: Product["userId"]) => {
+const getProductDetail = async (slug: string) => {
     try {
-        const res = await fetch(`http://localhost:3000/api/product/detail?id=${id}`, {
-            cache: 'no-store'
-        })
-        if(!res.ok) return console.log("res not ok")
+        await connectMongoDataBase()
+        const productDetail = await Product.findOne({_id: slug}).lean()
+  
+        if(!productDetail) return
 
-        const detailProduct = await res.json();
+        const sellerId = productDetail.userId
+
+        const sellerData = await User.findOne({userId: sellerId})
+
+        const sellerUsername = sellerData?.username ?? "john doe"
+
+        const detail = {...productDetail, sellerUsername}
         
-        // console.log(detailProduct)
-
-        if(!detailProduct) return
-
-        return detailProduct;
+        return detail as Product & {sellerUsername: string }
     } catch (error) {
         console.log(error)
     }
-}
+  }
 
 const Page = async ({params} : {params: {slug: string}}) => {
 
-    const { slug } = await params; //slug references from the id in the featured product list which is Product Listed by ID
-    const detailProduct = await getDetailProduct(slug); //get the detailed product by id
+    const { slug } = params; //slug references from the id in the featured product list which is Product Listed by ID
+    const detail = await getProductDetail(slug); //get the detailed product by id
     
-    if(!detailProduct) return 
+    if(!detail) return ""
 
     // console.log("product console from page: ", detailProduct)
 
     return (
         <section>
-            <DetailProduct detail={detailProduct} />
+            <DetailProduct product={detail} />
         </section>
     )
 }

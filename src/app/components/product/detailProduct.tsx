@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import AddToCartBtn from "../button/addToCartBtn"
-import getAllProducts from "@/utils/getAllProducts"
+import { useEffect } from "react";
+import AddToCartBtn from "../button/addToCartBtn";
+import getAllProducts from "@/utils/getAllProducts";
+import ProductGallery from "../gallery/productGallery";
 
 // const getSellerUsername = () => {
 //     useEffect(() => {
 //         async function fetchData () {
 //             try {
 //                 const res = await getAllProducts();
-//                 if(!res) return 
+//                 if(!res) return
 
 //                 const {user: userData} = await res.json();
 //                 return userData
@@ -22,55 +23,56 @@ import getAllProducts from "@/utils/getAllProducts"
 //     },[])
 // }
 
-const DetailProduct = ({detail} : {detail: Product & {sellerUsername: string}}) => {
+const DetailProduct = ({
+  product,
+}: {
+  product: Product & { sellerUsername: string };
+}) => {
+  // const sellerUsername = getSellerUsername();
+  // console.log("Seller Username: ", sellerUsername)
 
-    // const sellerUsername = getSellerUsername();
-    // console.log("Seller Username: ", sellerUsername)
 
-    return(
-        <div className="font-medium grid grid-cols-2 ml-40 mr-3 my-4 border-2 shadow-md rounded-lg">
-            <div className="flex p-2 ">
-                <img className="p-3 h-80 w-90 shadow-sm hover:shadow-lg" src={detail?.images[0]} alt={detail?.productName} />
-            </div>
-            <div className="m-3 pl-3 border-l-2 space-y-1.5">
-                <div className="mb-2 p-1 font-bold text-3xl shadow-md border-b-2">
-                    {detail?.productName}
-                </div>
-                <div className="mb-4 font-semibold border-b-4 text-lg">
-                    <label className="">Merchant: </label>
-                    {detail?.sellerUsername}
-                </div>
-                <div>
-                    <label htmlFor="">Price: </label>
-                        {detail?.price} $
-                    </div>
-                <div>
-                    <label htmlFor="">Brand: </label>
-                    {detail?.brand}
-                </div>
-                <div>
-                    <label htmlFor="">Categories: </label>
-                    {detail?.categories.join(", ")}
-                </div>
-                <div>
-                    <label htmlFor="">Total Product: </label>
-                    {detail?.inventory}
-                </div>
-                <div>
-                    <label htmlFor="">Description: </label>
-                    {detail?.description}
-                </div>
-                <div className="flex justify-between">
-                        <AddToCartBtn props={detail}/>
-                    <div className="my-14 mr-5 h-10 w-24 border-2 rounded-md hover:shadow-lg hover:font-bold">
-                        <button className="mt-[6px] ml-[10px]">Purchase</button>
-                    </div>
-                    
-                </div>
-            </div>
-            
+  return (
+    <section className="flex flex-col w-full h-[500px] max-h-full bg-transparent">
+      <div className="flex flex-row h-full pt-10 justify-around">
+        <div className="w-1/2 h-full">
+          <ProductGallery images={product?.images} />
         </div>
-    )
-}
+        <div className="bg-blue-50 w-1/2 h-full rounded-xl">
+            <div className="p-2 rounded-t-lg bg-slate-400 text-3xl font-light tracking-wide text-gray-900 dark:text-white">
+              {product?.sellerUsername}
+            </div>
+          <div className="flex flex-col justify-between p-4 leading-normal">
+            
+            <div className="text-2xl font-medium tracking-wide text-gray-900 dark:text-white">
+              {product?.productName}
+            </div>
+            {product?.brand && (
+              <div className="mb-2 italic text-sm tracking-tight font-semibold text-gray-400">
+                from {product?.brand}
+              </div>
+            )}
+            <div className="mb-2 text-2xl font-semibold tracking-tight text-gray-500">
+              Rp. {product?.price}
+            </div>
+            <div className="mb-2 italic text-sm tracking-tight font-normal text-gray-900">
+              Available: {product?.inventory}
+            </div>
+            <div className="mb-2 text-gray-500 h-[250px] max-h-[420px] ring-1 ring-gray-200 rounded-lg overflow-y-auto">
+              <pre className="text-wrap p-1 text-base font-medium tracking-tight">
+                {product?.description}
+              </pre>
+            </div>
+          </div>
+          <div className="">
+              <div className="flex flex-row gap-8">
+                <AddToCartBtn props={product} />
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-export default DetailProduct
+export default DetailProduct;

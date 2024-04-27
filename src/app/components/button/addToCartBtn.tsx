@@ -100,7 +100,7 @@ const AddToCartBtn = ({ props }: { props: CartProduct}) => {
         </div>
           {amountItems > 0 && (
               <div className="flex-row grid-rows-2 mt-4 bg-slate-100 ml-5 mr-16 border-2 shadow-sm rounded-lg">
-                <div className="flex justify-center bg-slate-300">Total Price: {totalPrice} $ </div>
+                <div className="flex justify-center bg-slate-300">Total Price: Rp. {totalPrice}</div>
                 <div className="flex justify-center my-3">
                   <button 
                     

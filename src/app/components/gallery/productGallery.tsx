@@ -11,10 +11,10 @@ export default function ProductGallery({images}: {images: Product['images']}) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 bg-opacity-70">
+    <div className="flex flex-col items-center gap-4">
       <div>
         <img
-          className="h-[500px] w-[500px] rounded-lg object-contain"
+          className="h-[500px] w-[500px] rounded-xl object-contain"
           src={chosenImg}
           alt=""
         />
