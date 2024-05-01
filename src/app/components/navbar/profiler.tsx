@@ -24,8 +24,6 @@ export default async function Profiler() {
 
   const session = await getServerSession(options)
 
-  if(!session) return
-
   const userInfo = await getUserDetail(session?.user?.id || "")
 
   return (
