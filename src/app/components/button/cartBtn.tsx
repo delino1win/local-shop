@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const CartIcon = ({enter, leave}: any) => {
@@ -53,19 +54,6 @@ const CartIcon = ({enter, leave}: any) => {
 //     }
 // }
 
-interface CartList extends Cart {
-    product: {
-        userId: string
-        productName: string
-        inventory: number
-        price: number
-        images: string[]
-        user: {
-          username: string
-        }
-    }[]
-}
-
 const CartBtn = () => {
   const { data: session } = useSession();
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -105,24 +93,23 @@ const CartBtn = () => {
             >
                 <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className="p-2">
                     <h3 className="text-base border-b-2 font-semibold mb-1 text-center">Your Cart</h3>
-                    {cartItems.map((props) => (
-                        <div className="bg-gray-100 rounded-lg" key={props.productId}>
-                            {props.product.map((product) => (
-                                <div className="flex grid-cols-3 py-1 justify-between border-b-2 mx-2"  key={product.userId}>
+                    <Link className="hover:font-semibold transition-all duration-200" href={``}>See All List</Link>
+                    {cartItems.map((prop) => (
+                        <div className="bg-gray-100 rounded-lg" key={prop.productId}>
+                                <div className="flex grid-cols-3 py-1 justify-between border-b-2 mx-2"  key={prop.product.userId}>
                                     <div className="border-2 shadow-lg rounded-lg">
-                                      <img className="rounded-lg justify-center w-[100px] h-[80px] " src={product?.images[0]} alt="Image" />
+                                      <img className="rounded-lg justify-center w-[100px] h-[80px] " src={prop?.product?.images[0]} alt="Image" />
                                     </div>
                                     <div className="flex-row content-center min-w-[170px] justify-start">
                                       <div className="font-extrabold text-lg">
-                                        {product.productName}
+                                        {prop?.product?.productName}
                                       </div>
                                       <div className="font-semibold text-sm">
-                                        {product?.user?.username}
+                                        {prop?.product?.user?.username}
                                       </div>
                                     </div>
-                                    <div className="content-center">{props.totalItem}X {product.price} $</div>
+                                    <div className="content-center">{prop?.totalItem}X {prop?.product?.price} $</div>
                                 </div>
-                            ))}
                         </div>
                     ))}
                 </div>

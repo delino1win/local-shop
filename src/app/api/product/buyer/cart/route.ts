@@ -5,7 +5,6 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET () {
-    connectMongoDataBase();
 
     const session = await getServerSession(options);
 
@@ -17,10 +16,11 @@ export async function GET () {
         return NextResponse.json({message: "You must be a Buyer!"})
 
     try {
-        const checkBuyerCart = await BuyerCart.find({buyerId: session?.user?.id})
-        console.log("check buyer cart: ",checkBuyerCart)
+        await connectMongoDataBase();
+        // const checkBuyerCart = await BuyerCart.find({buyerId: session?.user?.id})
+        // console.log("check buyer cart: ",checkBuyerCart)
         
-        const listCart: {listCart : Product & User} = await BuyerCart.find({buyerId: session?.user?.id}).populate<Product>({
+        const listCart = await BuyerCart.find({buyerId: session?.user?.id}).populate<Product>({
         path: 'product',
             options: {
                 select: 'userId productName inventory price images',
@@ -30,7 +30,7 @@ export async function GET () {
             }}
         }).lean();
 
-        console.log("user list cart: ", listCart)
+        // console.log("user list cart: ", listCart)
 
         if(!listCart) return NextResponse.json({message: "You do not have Item to Buy!!"});
 

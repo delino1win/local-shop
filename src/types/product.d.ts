@@ -14,6 +14,5 @@ declare global {
         images: string[]
         thumbnail: string
     }
-    type ProductWithUsername = Product & {user: {username: string}}
-    
+    type ProductWithUsername = Product & {user: {username: string}}    
 }

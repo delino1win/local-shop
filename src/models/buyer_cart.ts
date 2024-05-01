@@ -12,7 +12,7 @@ BuyerCartSchema.virtual("product", {
   ref: Product, //From source wehere this schema will be populated
   localField: "productId", //
   foreignField: "_id",
-  justOne: false,
+  justOne: true,
 });
 
 const BuyerCart: mongoose.Model<Cart> =

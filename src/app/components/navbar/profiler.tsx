@@ -1,50 +1,37 @@
-"use client";
-
 import { useSession } from "next-auth/react";
 import CartBtn from "../button/cartBtn";
 import ProfileBtn from "../button/profileBtn";
 import { useEffect, useState } from "react";
+import connectMongoDataBase from "@/libs/mongodb";
+import User from "@/models/user";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
-async function getUserDetail () {
+async function getUserDetail (sid: string) {
+
   try {
-    const res = await fetch(`/api/user`, {
-      method: "GET"
-    })
+    await connectMongoDataBase()
 
-    if(!res.ok) return null
-
-    const userInfo = await res.json()
-    return userInfo
+    const getUserInfo = await User.findOne({userId: sid})
+    if(!getUserInfo) return
+    return getUserInfo
   } catch (error) {
     console.log(error)
   }
 }
 
-export default function Profiler() {
-  const [userInfo, setUserInfo] = useState<User>()
+export default async function Profiler() {
 
-  // const [profile, setProfile] = useState<Profile>()
+  const session = await getServerSession(options)
 
-  useEffect(() => {
-    async function fetchData () {
-      try {
-        const res = await getUserDetail()
-        if(!res) return null
-        setUserInfo(res)
+  if(!session) return
 
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchData()
-  }, [])
-
-  
+  const userInfo = await getUserDetail(session?.user?.id || "")
 
   return (
     <div className="flex max-sm:flex-row">
       <div className="mt-1 mx-4">
-        {userInfo && userInfo?.userRole === "buyer" && (
+        {userInfo?.userRole === "buyer" && (
           <div className="flex flex-row gap-2">
             <CartBtn />
             <div className="text-lg text-green-900 font-light bg-slate-500 rounded-2xl px-2">
