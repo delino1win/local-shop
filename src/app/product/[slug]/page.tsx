@@ -1,45 +1,49 @@
-import DetailProduct from "@/app/components/product/detailProduct"
-import connectMongoDataBase from "@/libs/mongodb"
-import Product from "@/models/product"
-import User from "@/models/user"
-import { headers } from "next/headers"
-
+import ProductComment from "@/app/components/comment/comment";
+import CommentSection from "@/app/components/comment/comment";
+import DetailProduct from "@/app/components/product/detailProduct";
+import connectMongoDataBase from "@/libs/mongodb";
+import Product from "@/models/product";
+import User from "@/models/user";
+import { headers } from "next/headers";
 
 const getProductDetail = async (slug: string) => {
-    try {
-        await connectMongoDataBase()
-        const productDetail = await Product.findOne({_id: slug}).lean()
-  
-        if(!productDetail) return
+  try {
+    await connectMongoDataBase();
+    const productDetail = await Product.findOne({ _id: slug }).lean();
 
-        const sellerId = productDetail.userId
+    if (!productDetail) return;
 
-        const sellerData = await User.findOne({userId: sellerId})
+    const sellerId = productDetail.userId;
 
-        const sellerUsername = sellerData?.username ?? "john doe"
+    const sellerData = await User.findOne({ userId: sellerId });
 
-        const detail = {...productDetail, sellerUsername}
-        
-        return detail as Product & {sellerUsername: string }
-    } catch (error) {
-        console.log(error)
-    }
+    const sellerUsername = sellerData?.username ?? "john doe";
+
+    const detail = { ...productDetail, sellerUsername };
+
+    return detail as Product & { sellerUsername: string };
+  } catch (error) {
+    console.log(error);
   }
+};
 
-const Page = async ({params} : {params: {slug: string}}) => {
+const Page = async ({ params }: { params: { slug: string } }) => {
+  const { slug } = params; //slug references from the id in the featured product list which is Product Listed by ID
+  const detail = await getProductDetail(slug); //get the detailed product by id
 
-    const { slug } = params; //slug references from the id in the featured product list which is Product Listed by ID
-    const detail = await getProductDetail(slug); //get the detailed product by id
-    
-    if(!detail) return ""
+  if (!detail) return "";
 
-    // console.log("product console from page: ", detailProduct)
+  // console.log("product console from page: ", detailProduct)
 
-    return (
-        <section>
-            <DetailProduct product={detail} />
-        </section>
-    )
-}
+  return (
+    <>
+      <DetailProduct product={detail} />
 
-export default Page
+      <div className="w-full bg-blue-50 mt-10">
+        <ProductComment product={detail}/>
+      </div>
+    </>
+  );
+};
+
+export default Page;

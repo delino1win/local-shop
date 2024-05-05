@@ -29,7 +29,7 @@ const AddToCartBtn = ({ props }: { props: CartProduct}) => {
     console.log("add item success")
 
     try {
-        const res = await fetch(`http://localhost:3000/api/product/buyer/cart`, {
+        const res = await fetch(`/api/product/buyer/cart`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json",

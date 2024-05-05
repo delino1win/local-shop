@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { FaStar } from "react-icons/fa";
 
 const FeaturedProduct = ({
   listProduct,

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import AddToCartBtn from "../button/addToCartBtn";
 import getAllProducts from "@/utils/getAllProducts";
 import ProductGallery from "../gallery/productGallery";
+import ProductComment from "../comment/comment";
 
 // const getSellerUsername = () => {
 //     useEffect(() => {
@@ -33,7 +34,7 @@ const DetailProduct = ({
 
 
   return (
-    <section className="flex flex-col w-full h-[500px] max-h-full bg-transparent">
+    <section className="flex flex-col w-full h-screen max-h-full bg-transparent gap-4">
       <div className="flex flex-row h-full pt-10 justify-around">
         <div className="w-1/2 h-full">
           <ProductGallery images={product?.images} />
