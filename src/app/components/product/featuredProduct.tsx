@@ -1,5 +1,6 @@
 "use client";
 
+import { formatter } from "@/utils/idrCurrency";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
@@ -37,7 +38,7 @@ const FeaturedProduct = ({
                 </div>
                 <div className="flex flex-col py-4 rounded-md px-2">
                 <div className="text-base font-semibold">
-                    Rp. {props?.price}
+                    {formatter.format(props?.price || 0)}
                 </div>
                 <div>
                     <i>{props?.user?.username}</i>
