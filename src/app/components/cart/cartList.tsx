@@ -97,12 +97,11 @@ export default function CartList ({props} : {props: CartList[]}) {
                 <td className="px-6 py-4">{product?.product?.inventory}</td>
                 <td className="px-6 py-4">
                   <div className="flex flex-row gap-2">
-                    <Link
-                      href={`/product/seller/updateProduct/${product?.product._id}`}
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    <div
+                      className="font-medium text-red-600 dark:text-blue-500 hover:underline"
                     >
-                      Edit
-                    </Link>
+                      Delete
+                    </div>
                     {/* <button onClick={() => deleteConfirmation(product?.product?._id, product?.product?.productName)}>Delete</button> */}
                   </div>
                 </td>

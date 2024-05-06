@@ -4,7 +4,6 @@ import DetailProduct from "@/app/components/product/detailProduct";
 import connectMongoDataBase from "@/libs/mongodb";
 import Product from "@/models/product";
 import User from "@/models/user";
-import { headers } from "next/headers";
 
 const getProductDetail = async (slug: string) => {
   try {

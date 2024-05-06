@@ -4,6 +4,7 @@ declare global {
   interface Chat {
     userId: string
     createdAt: object
-    messageId: string
+    text: string
+    chatRoomId: string
   }
 }

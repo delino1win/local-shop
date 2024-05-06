@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "./NavBar";
-import Link from "next/link";
 import AuthProvider from "./context/AuthProvider";
-import CartBtn from "./components/button/cartBtn";
 import Sidebar from "./components/sidebar";
 import MobileSidebar from "./components/sidebar/seller/mobile_sidebar_menu";
+import ChatModal from "./components/chat/chatModal";
 
 const inter = Inter({ subsets: ["latin"] });
 

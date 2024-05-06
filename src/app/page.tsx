@@ -27,6 +27,7 @@ const Page = async () => {
  return(
     <div> 
         <FeaturedProduct listProduct={allProductList} />
+        
     </div>
  )
 }

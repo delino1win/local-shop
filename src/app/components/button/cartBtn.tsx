@@ -93,7 +93,7 @@ const CartBtn = () => {
             >
                 <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className="p-2">
                     <h3 className="text-base border-b-2 font-semibold mb-1 text-center">Your Cart</h3>
-                    <Link className="hover:font-semibold transition-all duration-200" href={``}>See All List</Link>
+                    <Link className="hover:font-semibold transition-all duration-200" href={`/product/buyer/cart/list`}>See All List</Link>
                     {cartItems.map((prop) => (
                         <div className="bg-gray-100 rounded-lg" key={prop.productId}>
                                 <div className="flex grid-cols-3 py-1 justify-between border-b-2 mx-2"  key={prop.product.userId}>
