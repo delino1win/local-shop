@@ -1,11 +1,11 @@
 import mongoose, {Schema} from "mongoose"
 
-const chatRoom = new Schema({
-  userIds: {
+const chatRoom = new Schema<ChatRoom>({
+  userIds: { //instigator and the seller
     _id: false,
     type: [String]
   },
-  name: {
+  instigatorId: { //usually buyer
     type: String
   },
   createdAt: {
@@ -22,6 +22,6 @@ const chatRoom = new Schema({
   }
 })
 
-const ChatRoom = mongoose.models.ChatRoom || mongoose.model("ChatRoom", chatRoom)
+const ChatRoom: mongoose.Model<ChatRoom> = mongoose.models.ChatRoom || mongoose.model("ChatRoom", chatRoom)
 
 export default ChatRoom

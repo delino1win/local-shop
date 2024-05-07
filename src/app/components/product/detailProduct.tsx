@@ -9,24 +9,6 @@ import { BsChatLeft } from "react-icons/bs";
 import ChatToSellerBtn from "../chat/_chatSellerForm";
 import ChatModal from "../chat/chatModal";
 
-// const getSellerUsername = () => {
-//     useEffect(() => {
-//         async function fetchData () {
-//             try {
-//                 const res = await getAllProducts();
-//                 if(!res) return
-
-//                 const {user: userData} = await res.json();
-//                 return userData
-
-//             } catch (error) {
-//                 console.log(error)
-//             }
-//         }
-//         fetchData()
-//     },[])
-// }
-
 type ChatContextT = [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 
 export const ChatContext = createContext<ChatContextT>([false, () => {}]);
@@ -51,7 +33,7 @@ const DetailProduct = ({
           <div className="bg-blue-50 w-1/2 h-full rounded-xl ">
             <div className="flex justify-between items-center p-2 rounded-t-lg bg-slate-400 text-3xl font-light tracking-wide text-gray-900 dark:text-white">
               {product?.sellerUsername}
-              <ChatToSellerBtn />
+              <ChatToSellerBtn product={product}/>
             </div>
             <div className="flex flex-col justify-between p-4 leading-normal">
               <div className="text-2xl font-medium tracking-wide text-gray-900 dark:text-white">
