@@ -8,28 +8,36 @@ export async function POST (request: NextRequest) {
   const session = await getServerSession(options)
 
   const formData = await request.formData()
-
   const sellerId = formData.get("sellerId")
 
-  const tempUserIds = []
-  tempUserIds.push(session?.user?.id)
-  tempUserIds.push(sellerId)
- 
   if(!session) return NextResponse.json({message: "Unauthorized"}, {status: 400})
   
   if(session?.user?.role !== 'buyer') return NextResponse.json({message: "Role must Buyer"}, {status: 400})
   
+  // console.log("username", session?.user?.username)
+
+  // const tempUserIds = {} as ChatRoom['userIds']
+  // tempUserIds.instigatorId = session?.user?.id || ""
+  // tempUserIds.push(sellerId)
+
   try {
     await connectMongoDataBase()
 
     const isExist = await ChatRoom.findOne({
-      userIds: tempUserIds
+      $or: [
+        {
+          'userIds.instigatorId': session?.user?.id, 
+          'userIds.receiverId': sellerId
+        }
+      ]
     })
 
     if(!isExist) {
-      const result = await ChatRoom.create({
-        userIds: tempUserIds,
-        instigatorName: session?.user?.username
+      await ChatRoom.create({
+        userIds: {
+          instigatorId: session?.user?.id,
+          receiverId: sellerId
+        }, 
       })
 
       return NextResponse.json({status: 200})

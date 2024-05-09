@@ -10,8 +10,8 @@ const BuyerCartSchema = new Schema<Cart>({
 
 BuyerCartSchema.virtual("product", {
   ref: Product, //From source wehere this schema will be populated
-  localField: "productId", //
-  foreignField: "_id",
+  localField: "productId", //this will inherit value from _id in product schema, and regain all data from product with specified _Id
+  foreignField: "_id", //from product _id in schema when document/object was created
   justOne: true,
 });
 

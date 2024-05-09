@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import User from "./user";
 
-const ProductSchema = new Schema<Product>(
+const productSchema = new Schema<Product>(
   {
     userId: { //The id of the person who creates the product which is SELLER
       type: String,
@@ -42,7 +42,7 @@ const ProductSchema = new Schema<Product>(
   }
 );
 
-ProductSchema.virtual("user", {
+productSchema.virtual("user", {
   ref: User, // reference schema
   localField: "userId", // field di schema ini
   foreignField: "userId", // field di reference schema
@@ -50,6 +50,6 @@ ProductSchema.virtual("user", {
 });
 
 const Product: mongoose.Model<Product> =
-  mongoose.models.Product || mongoose.model("Product", ProductSchema);
+  mongoose.models.Product || mongoose.model("Product", productSchema);
 
 export default Product;

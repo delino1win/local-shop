@@ -1,12 +1,15 @@
 import mongoose, {Schema} from "mongoose"
+import User from "./user"
 
 const chatRoom = new Schema<ChatRoom>({
-  userIds: { //instigator and the seller
+  userIds: { //instigator and the seller, usually
     _id: false,
-    type: [String]
-  },
-  instigatorId: { //usually buyer
-    type: String
+    instigatorId: {
+      type: String
+    },
+    receiverId: {
+      type: String
+    }
   },
   createdAt: {
     type: Date,
@@ -21,6 +24,14 @@ const chatRoom = new Schema<ChatRoom>({
     type: [String]
   }
 })
+
+chatRoom.virtual("user", {
+  ref: User,
+  localField: "userIds.receiverId",
+  foreignField: "userId",
+  justOne: true
+})
+
 
 const ChatRoom: mongoose.Model<ChatRoom> = mongoose.models.ChatRoom || mongoose.model("ChatRoom", chatRoom)
 
