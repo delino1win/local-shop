@@ -24,13 +24,15 @@ export async function POST (request: NextRequest) {
     await connectMongoDataBase()
 
     const isExist = await ChatRoom.findOne({
-      $or: [
+      $and: [
         {
           'userIds.instigatorId': session?.user?.id, 
           'userIds.receiverId': sellerId
         }
       ]
     })
+
+    console.log("isExist? :", isExist )
 
     if(!isExist) {
       await ChatRoom.create({

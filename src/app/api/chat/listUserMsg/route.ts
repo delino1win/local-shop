@@ -14,15 +14,15 @@ export async function GET (request: NextRequest) {
     await connectMongoDataBase()
 
     const result = await ChatRoom.find({
-      $or: [{
         'userIds.instigatorId': session?.user?.id
-      }]
     }).populate<User>({
       path: 'user',
       options: {
         select: 'username userRole'
       }
     }).lean()
+
+    // console.log("contact list:", result)
 
     return NextResponse.json(result)
 

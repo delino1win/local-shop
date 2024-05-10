@@ -11,6 +11,7 @@ export async function GET () {
                 select : '_id username'
             }
         }).lean();
+        
         return NextResponse.json(productList);
     } catch (error) {
         console.log(error)
