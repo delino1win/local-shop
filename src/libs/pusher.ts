@@ -9,7 +9,6 @@ export const pusherServer = new PusherServer({
   useTLS: true
 })
 
-export const pusherClient = new PusherClient(`${process.env.NEXT_PUBLIC_PUSHER_APP_KEY}`,{
+export const pusherClient = new PusherClient(`${process.env.NEXT_PUBLIC_PUSHER_APP_KEY!}`,{
     cluster: 'ap1'
   })
-

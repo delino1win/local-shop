@@ -3,16 +3,17 @@
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 
-export default function SendMessage({data}: {data?: Contact}) {
-
+export default function SendMessage({chatRoomId}: {chatRoomId: string}) {
+  
   const [message, setMessage] = useState<string>("")
+
+  const roomId = chatRoomId
 
   const sendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const formData = new FormData()
 
-    const roomId = data?._id.toString()
 
     formData.append('text', message)
     formData.append('roomId', roomId || "")
