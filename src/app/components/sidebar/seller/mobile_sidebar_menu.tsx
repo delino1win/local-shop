@@ -12,6 +12,8 @@ const MobileSidebar = () => {
 
   if (session?.user?.role === "buyer" || !session) return null;
 
+  if(!session?.user?.id) return
+
   return (
     <div className="sm:hidden fixed top-25 z-30">
       <button onClick={() => setIsOpen(!isOpen)} className="">
@@ -26,7 +28,7 @@ const MobileSidebar = () => {
       >
         {isOpen && (
           <div className={``}>
-            {session?.user?.role === "seller" ? <SidebarMenuSeller /> : null}
+            {session?.user?.role === "seller" ? <SidebarMenuSeller userId={session?.user?.id}/> : null}
           </div>
         )}
       </div>

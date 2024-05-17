@@ -34,9 +34,7 @@ export default function SellerMainRoom({data, roomId}: {data?: Chat[], roomId?: 
   const [messages, setMessages] = useState<Chat[]>()
 
   const {data: session} = useSession()
-
-  let seller = 'seller'
-
+  
   useEffect(() => {
     setMessages(data)
   }, [data])
@@ -47,7 +45,7 @@ export default function SellerMainRoom({data, roomId}: {data?: Chat[], roomId?: 
     //When roomId get mounted, this will be connect to the channel or roomId (roomId channel registered in BE)
     pusherClient.subscribe(roomId || '') 
     
-    const messageHandler = (message: Chat) => { //callback as function that has message argument indicated from newMessage in the BE
+    const messageHandler = (message: Chat) => { //callback as custom function that has message argument indicated from newMessage in the BE
 
       setMessages((current) => {
 
