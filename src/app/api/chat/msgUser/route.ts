@@ -26,6 +26,7 @@ export async function POST (request: NextRequest) {
 
     const newMessage = await UserMessage.create({
       userId: session?.user?.id,
+      senderRole: session?.user?.role,
       text: message,
       chatRoomId: roomId,
       createdAt: Date.now()

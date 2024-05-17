@@ -88,7 +88,7 @@ export default function SellerMainRoom({data, roomId}: {data?: Chat[], roomId?: 
            {messages.map(message => (
               <div key={message?._id} className='flex my-3'>
                 <div className=''>
-                <p className={`${session?.user?.role === 'buyer' ? 'bg-green-200' : 'bg-neutral-200' } p-2 rounded-tl-xl `}>{message.text}</p>
+                <p className={`${message?.senderRole === 'buyer' ? 'bg-green-200' : 'bg-neutral-200' } p-2 rounded-tl-xl `}>{message.text}</p>
                 <label className='font-light text-xs italic self-end bg-neutral-200 p-1 my-1 mr-2'>{formatChatTime(message.createdAt)}</label>
                 </div>
                 

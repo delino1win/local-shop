@@ -7,6 +7,9 @@ const userMessage = new Schema<Chat>({
   userId: {
     type: String
   },
+  senderRole: {
+    type: String
+  },
   text: {
     type: String,
   },
