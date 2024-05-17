@@ -1,9 +1,8 @@
 'use client'
 
-import Body from "./mainRoom";
-import HeaderTitle from "./headerTitle";
-import SendMessage from "./sendMessage";
-import MainRoom from "./mainRoom";
+import SellerHeaderTitle from "./sellerHeader"
+import SellerSendMessage from "./sellerSendMessage";
+import SellerMainRoom from "./sellerMainRoom";
 import connectMongoDataBase from "@/libs/mongodb";
 import ChatRoom from "@/models/chat_room";
 import { useEffect, useState } from "react";
@@ -40,10 +39,10 @@ import { find } from 'lodash'
 //Using use client
 const getUserConversation = async (params: ConversationParams) => {
 
-  const {roomId, receiverUsername, receiverUserRole} = params
+  const {roomId, instigatorUsername, instigatorRole} = params
 
   try {
-    const res = await fetch(`/api/chat/displayConversation?roomId=${roomId}&username=${receiverUsername}&role=${receiverUserRole}`)
+    const res = await fetch(`/api/chat/displayConversation?roomId=${roomId}&username=${instigatorUsername}&role=${instigatorRole}`)
 
     if(!res.ok) return console.error(res.status)
 
@@ -59,21 +58,19 @@ const getUserConversation = async (params: ConversationParams) => {
 
 interface ConversationParams {
   roomId: string
-  receiverUsername: string
-  receiverUserRole: string
+  instigatorUsername: string
+  instigatorRole: string
 }
 
 interface ConversationsContext extends ConversationParams {
-  instigatorId: string
+  receiverId: string
   conversations: Chat[]
 }
 
 // Do not fetching shit from here, it does not work. The result is alwayas empty idk why
-export default function Conversation({params} : {params: ConversationParams}) {
+export default function SellerConversation({params} : {params: ConversationParams}) {
 
   // console.log("conv params: ", params)
-  // const userData = await getUserContext(userRef)
-  // const conversationData = await getUserConversation(userData?.)
 
   const [convContext, setConvContext] = useState<ConversationsContext>()
 
@@ -81,6 +78,14 @@ export default function Conversation({params} : {params: ConversationParams}) {
 
     try {
     const conversationContext = await getUserConversation(params)
+
+    // {
+    //    receiverId: session?.user?.id,
+    //    instigatorUsername: userName,
+    //    instigatorRole: userRole,
+    //    conversations: usersConversation
+    // }
+
     setConvContext(conversationContext)
     } catch (error) {
       console.error(error)
@@ -96,16 +101,16 @@ export default function Conversation({params} : {params: ConversationParams}) {
   return (
     <>
       <div className="h-[17%] bg-blue-100">
-        <HeaderTitle username={convContext?.receiverUsername}/>
+        <SellerHeaderTitle username={convContext?.instigatorUsername}/>
       </div>
       <div className="h-[66%] overflow-auto">
         {convContext?.conversations && (
-          <MainRoom data={convContext?.conversations} roomId={params?.roomId} />
+          <SellerMainRoom data={convContext?.conversations} roomId={params?.roomId} />
         )}
       </div>
         <div className="flex h-[17%] justify-center items-center bg-slate-200">
         {params?.roomId && (
-          <SendMessage chatRoomId={params.roomId}/>
+          <SellerSendMessage chatRoomId={params.roomId}/>
         )}
       </div>
     </>

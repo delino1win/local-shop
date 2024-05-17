@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 
-export default function SendMessage({chatRoomId}: {chatRoomId: string}) {
+export default function SellerSendMessage({chatRoomId}: {chatRoomId: string}) {
   
   const [message, setMessage] = useState<string>("")
 
@@ -25,7 +25,7 @@ export default function SendMessage({chatRoomId}: {chatRoomId: string}) {
         body: formData
       })
 
-      if(!res.ok) return alert("send messaeg failed")
+      if(!res.ok) return alert("send message failed")
 
       setMessage("")
     } catch (error) {

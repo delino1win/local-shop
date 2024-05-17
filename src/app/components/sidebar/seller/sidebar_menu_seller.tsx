@@ -1,14 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MdOutlineMail } from "react-icons/md";
 
-const SidebarMenuSeller = () => {
+
+const SidebarMenuSeller = ({userId} : {userId: string}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [id, setId] = useState<string>('')
 
   function onOpen() {
     setIsOpen(!isOpen);
   }
+
+  useEffect(() => {
+    setId(userId)
+  }, [userId])
+
 
   return (
     <div className="py-2 mx-2 mt-5 rounded-lg bg-zinc-100 max-sm:text-xs">
@@ -36,6 +44,12 @@ const SidebarMenuSeller = () => {
           </ul>
         </div>
       )}
+      <button className={`flex justify-between mt-5 p-1 mx-2 min-w-24 w-52 max-sm:w-40 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-slate-300 focus:rounded-lg focus:font-bold hover:font-semibold`}>
+        <label>Messages</label>
+        <Link href={`/stall/chat/${id}`}>
+        <MdOutlineMail size={32}/>
+        </Link>
+      </button>
     </div>
   );
 };

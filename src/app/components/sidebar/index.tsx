@@ -8,12 +8,14 @@ const Sidebar = async () => {
 
   if (session?.user?.role === "buyer" || !session) return null;
 
+  if(!session?.user?.id) return
+
   return (
     <div className="bg-blue-200">
       <div className="bg-blue-200 max-sm:hidden">
         <div className="w-[250px] bg-stone-50">
           <div className="fixed flex-col min-h-screen h-full min-w-[220px] w-[250px] overflow-y-scroll">
-            {session?.user?.role === "seller" ? <SidebarMenuSeller /> : null}
+            {session?.user?.role === "seller" ? <SidebarMenuSeller userId={session?.user?.id} /> : null}
           </div>
         </div>
       </div>

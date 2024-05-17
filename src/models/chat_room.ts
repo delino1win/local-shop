@@ -27,7 +27,14 @@ const chatRoom = new Schema<ChatRoom>({
 
 chatRoom.virtual("user", {
   ref: User,
-  localField: "userIds.receiverId",
+  localField: "userIds.receiverId", //seller userid
+  foreignField: "userId",
+  justOne: true
+})
+
+chatRoom.virtual('userSeller', {
+  ref: User,
+  localField: "userIds.instigatorId", //customer/buyer userid
   foreignField: "userId",
   justOne: true
 })

@@ -25,7 +25,7 @@ import { formatChatTime } from '@/utils/dateFormatter'
 // }
 
 
-export default function MainRoom({data, roomId}: {data?: Chat[], roomId?: string}) {
+export default function SellerMainRoom({data, roomId}: {data?: Chat[], roomId?: string}) {
 
   const bottomRef = useRef(null)
 
@@ -51,8 +51,8 @@ export default function MainRoom({data, roomId}: {data?: Chat[], roomId?: string
 
       setMessages((current) => {
 
-        console.log("current: ",current)
-        console.log("message: ",message)
+        // console.log("current: ",current)
+        // console.log("message: ",message)
 
         if(!current) return
 

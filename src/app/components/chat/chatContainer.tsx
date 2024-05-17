@@ -32,7 +32,7 @@ const getContactUsers = async () => {
 //   }
 // }
 
-export default function ChatBoard() {
+export default function ChatContainer() {
 
   const [isOpen, setIsOpen] = useContext(ChatContext);
 
@@ -108,21 +108,19 @@ export default function ChatBoard() {
 
   return (
     <>
-      <div className="flex w-[700px] h-[500px] bg-slate-50 rounded-xl">
+      <div className={`flex w-[700px] h-[500px] bg-slate-50 rounded-xl`}>
         <div className="flex-1 w-[100px] border-r-2 border-neutral-400 bg-blue-100">
           <div className="h-[17%]"></div>
           <div className="flex flex-col p-2 h-full overflow-y-auto">
             {users.map((prop) => (
-              <div key={prop.userIds.instigatorId} className="mb-3">
-                {/* {onClick={() => setConversationData()}} */}
-                <div className="flex flex-col" onClick={() => setConversationParams({
+              <div key={prop.userIds.instigatorId} className="mb-3 px-2 py-1 ring-1 ring-gray-400 rounded-md tracking-wide font-medium text-gray-900 hover:bg-slate-300 hover:shadow-md active:bg-slate-600 transition-all duration-200 ease-out">
+                <div className="flex flex-row justify-between" onClick={() => setConversationParams({
                   roomId: prop?._id,
                   receiverUsername: prop?.user?.username,
                   receiverUserRole: prop?.user?.userRole,
                 })}> 
                   <div>{prop.user.username}</div>
-                  <div>{prop?._id}</div>
-                  <div>{prop.user.userRole}</div>
+                  <div className="italic text-gray-400 text-sm">{prop.user.userRole}</div>
                 </div>
               </div>
             ))}
@@ -131,7 +129,6 @@ export default function ChatBoard() {
         <div className="flex w-[65%] flex-col bg-slate-400 ml-2">
           <div className="h-full bg-slate-50 border-l-2">
             {conversationParams && <Conversation params={conversationParams}/>}
-
           </div>
         </div>
       </div>

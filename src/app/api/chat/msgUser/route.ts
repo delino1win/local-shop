@@ -18,18 +18,22 @@ export async function POST (request: NextRequest) {
   const message = formData.get('text')
   const roomId = formData.get('roomId')?.toString() || ''
 
+  if(!message) return NextResponse.json({message: "Message cant be empty"}, {status: 400})
+  if(!roomId) return NextResponse.json({message: "Unathorized"}, {status: 401})
+
   try {
     await connectMongoDataBase()
 
     const newMessage = await UserMessage.create({
       userId: session?.user?.id,
       text: message,
-      chatRoomId: roomId
+      chatRoomId: roomId,
+      createdAt: Date.now()
     })
 
     const checkPusherTriggerServer = await pusherServer.trigger(roomId, 'messages:new', newMessage)
 
-    console.log(checkPusherTriggerServer)
+    // console.log(checkPusherTriggerServer)
 
     return NextResponse.json(newMessage, {status: 200})
 

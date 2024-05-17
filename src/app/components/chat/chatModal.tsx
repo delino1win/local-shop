@@ -4,8 +4,9 @@ import { useSession } from "next-auth/react";
 import { useContext, useState } from "react";
 import { BsChatLeftTextFill } from "react-icons/bs";
 import { BsArrowsAngleContract } from "react-icons/bs";
-import ChatBoard from "./chatBoard";
+import ChatBoard from "./chatContainer";
 import { ChatContext } from "../product/detailProduct";
+import ChatContainer from "./chatContainer";
 
 export default function ChatModal() {
 
@@ -29,7 +30,7 @@ export default function ChatModal() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={`absolute right-0 bg-slate-50 p-1 rounded-lg -top-5 size-9 shadow-sm z-30 active:bg-slate-200 hover:shadow-lg hover:p-2 transition-all duration-300 ease-in`}
               />
-              <ChatBoard />
+              <ChatContainer />
             </div>
           ) : (
             <BsChatLeftTextFill
