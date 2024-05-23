@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <NavBar />
-          <div className="min-h-screen w-full flex max-sm:flex-none max-sm:max-w-full bg-slate-500">
+          <div className="min-h-screen w-full flex max-sm:flex-none max-sm:max-w-full bg-gray-500">
             <Sidebar />
             <MobileSidebar />
             <div className="mx-24 rounded-lg flex-1 max-sm:mx-12 max-sm:text-xs overflow-x-auto">
