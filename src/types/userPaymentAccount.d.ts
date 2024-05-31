@@ -9,11 +9,11 @@ declare global {
       ewallet: string[]
       qris: boolean
     }
-    nationalId: number
-    phoneNumber: number
+    nationalId: string
+    phoneNumber: string
     activation: boolean
     activationAt: object
     updateAt: object
-    totalTransactionAmount: string
+    totalTransactionAmount: number
   }
 }

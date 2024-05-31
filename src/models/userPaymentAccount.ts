@@ -1,5 +1,6 @@
 import mongoose, {Schema} from 'mongoose'
 import User from './user'
+import { StringXor } from 'next/dist/compiled/webpack/webpack'
 
 const userPaymentAccount = new Schema<UserPaymentAccount>({
   userId: {
@@ -22,10 +23,10 @@ const userPaymentAccount = new Schema<UserPaymentAccount>({
     }
   },
   nationalId: {
-    type: Number
+    type: String
   },
   phoneNumber: {
-    type: Number
+    type: String
   },
   activation: {
     type: Boolean,
@@ -38,7 +39,7 @@ const userPaymentAccount = new Schema<UserPaymentAccount>({
     type: Date
   },
   totalTransactionAmount: {
-    type: String
+    type: Number
   }
 })
 
