@@ -89,7 +89,7 @@ export default function CartList({ props }: { props: CartList[] }) {
     }
   }
 
-  console.log(chosenItems);
+  // console.log(chosenItems);
 
   return (
     <>

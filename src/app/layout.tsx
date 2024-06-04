@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from "./NavBar";
+import NavBar from "./navbar/NavBar";
 import AuthProvider from "./context/AuthProvider";
 import Sidebar from "./components/sidebar";
 import MobileSidebar from "./components/sidebar/seller/mobile_sidebar_menu";
-import ChatModal from "./components/chat/chatModal";
+import { Suspense } from "react";
+import Loading from "./loading";
+// import ChatModal from "./components/chat/chatModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,8 +29,11 @@ export default function RootLayout({
           <div className="min-h-screen w-full flex max-sm:flex-none max-sm:max-w-full bg-slate-500">
             <Sidebar />
             <MobileSidebar />
+            
             <div className="mx-24 rounded-lg flex-1 max-sm:mx-12 max-sm:text-xs overflow-x-auto">
+              <Suspense fallback={<Loading />}>
               {children}
+              </Suspense>
             </div>
           </div>
         </AuthProvider>

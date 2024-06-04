@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { options } from "./api/auth/[...nextauth]/options";
-import Profiler from "./components/navbar/profiler";
+import { options } from "../api/auth/[...nextauth]/options";
+import Profiler from "../components/navbar/profiler";
+import Loading from "../loading";
 
 // const navBarProps = {
 //     prop1: <Link href="/featuredproduct">HOME</Link>,
@@ -19,6 +20,7 @@ import Profiler from "./components/navbar/profiler";
 const NavBar = async () => {
 
     return (
+        
         <nav className="p-5 space-x-56 sticky top-0 bg-gradient-to-l from-slate-300 to-sky-300 w-full shadow-lg max-sm:max-w-full">
             <div className="flex justify-between align-middle max-sm:text-sm">
                 <div className=" mt-2 hover:font-bold">
@@ -26,7 +28,6 @@ const NavBar = async () => {
                 </div>
                 <Profiler/>
             </div>
-            
         </nav> 
     );
 }

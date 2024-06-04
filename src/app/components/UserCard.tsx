@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { User } from "next-auth";
 
 type Props = {
-    user: {
+    user?: {
         username?: User["username"]
         role?: User['role']
         image?: User['image']

@@ -1,6 +1,11 @@
+"use client"
+
 import { formatter } from "@/utils/idrCurrency";
 import { BsShop } from "react-icons/bs";
 import { subtotal } from "@/utils/priceFormula";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const accumulatePrice = (receiptList: CartList[]) => {
   const listAmount = receiptList.map(item => {
@@ -18,6 +23,38 @@ export default function CheckoutReceipt({
 }: {
   receiptList: CartList[];
 }) {
+
+  const router = useRouter();
+
+  const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const orderProduct = {
+      buyerId: receiptList[0].buyerId, //can use session too but reduce performance. since buyerId only one.
+      grossPrice: accumulatePrice(receiptList),
+      productDetail: receiptList.map(prop => (
+        {
+          productId: prop.productId,
+          productName: prop.product.productName,
+          merchantUsername: prop.product.user.username,
+          price: prop.product.price,
+          productAmount: prop.totalItem
+        }
+      ))
+    }
+
+    console.log('order product:', orderProduct)
+
+    // const res = await fetch(`/api/transaction/customer/payment`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(productInvoice)
+    // })
+
+    // router.push(``) //expect the invoiceId    
+  }
 
   return (
     <>
@@ -69,12 +106,13 @@ export default function CheckoutReceipt({
               <label className="pl-3">TOTAL</label>
               <div className="px-3 border-slate-100">{formatter.format(Number(accumulatePrice(receiptList)))}</div>
             </div>
-            <form action="" className="flex justify-center">
+            <form onSubmit={onSubmitHandler} className="flex justify-center">
               <button
                 type="submit"
                 className="min-w-[260px] w-[400px] text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               >
-                Proses Pembayaran
+                {/* <Link href={`/accountPayment/302480384503`} target="_blank">Proses Pembayaran</Link> */}
+                Bayar
               </button>
             </form>
           </div>
