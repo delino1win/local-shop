@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { formatter } from "@/utils/idrCurrency";
 import { BsShop } from "react-icons/bs";
@@ -8,53 +8,59 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const accumulatePrice = (receiptList: CartList[]) => {
-  const listAmount = receiptList.map(item => {
-    const tItem = item.totalItem
-    const price = Number(item.product.price)
-    const total = tItem * price
-    return total
-  })
+  const listAmount = receiptList.map((item) => {
+    const tItem = item.totalItem;
+    const price = Number(item.product.price);
+    const total = tItem * price;
+    return total;
+  });
 
-  return listAmount.reduce((sum, num) => sum + num, 0)
-}
+  return listAmount.reduce((sum, num) => sum + num, 0);
+};
 
 export default function CheckoutReceipt({
   receiptList,
 }: {
   receiptList: CartList[];
 }) {
-
   const router = useRouter();
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const orderProduct = {
-      buyerId: receiptList[0].buyerId, //can use session too but reduce performance. since buyerId only one.
+      // buyerId: receiptList[0].buyerId, //can use session too but reduce performance. since buyerId only one.
+      email: receiptList[0].product.user.email,
       grossPrice: accumulatePrice(receiptList),
-      productDetail: receiptList.map(prop => (
-        {
-          productId: prop.productId,
-          productName: prop.product.productName,
-          merchantUsername: prop.product.user.username,
-          price: prop.product.price,
-          productAmount: prop.totalItem
-        }
-      ))
+      productDetail: receiptList.map((prop) => ({
+        id: prop.productId,
+        name: prop.product.productName,
+        merchant_name: prop.product.user.username,
+        price: prop.product.price,
+        quantity: prop.totalItem,
+      })),
+    };
+
+    // console.log('order product:', orderProduct)
+
+    const res = await fetch(`/api/paymentSandbox`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderProduct),
+    });
+
+    if (!res.ok) {
+      alert("Failed!");
+    } else {
+      const data: PaymentType = await res.json();
+
+      console.log(data)
+      router.push(`/accountPayment/${data._id}`); //expect the invoiceI
+
     }
-
-    console.log('order product:', orderProduct)
-
-    // const res = await fetch(`/api/transaction/customer/payment`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify(productInvoice)
-    // })
-
-    // router.push(``) //expect the invoiceId    
-  }
+  };
 
   return (
     <>
@@ -85,7 +91,9 @@ export default function CheckoutReceipt({
                       <div>{item.totalItem}x</div>
                     </div>
                     <div className="flex flex-row justify-between">
-                      <div>{formatter.format(parseFloat(item.product.price))}</div>
+                      <div>
+                        {formatter.format(parseFloat(item.product.price))}
+                      </div>
                     </div>
                     <div className="flex flex-row justify-between mt-1 border-t-[1px] border-slate-50">
                       <label>Sub - total</label>
@@ -104,7 +112,9 @@ export default function CheckoutReceipt({
           <div className="flex flex-col py-3 gap-3">
             <div className="flex justify-between text-xl border-t-2 border-slate-100 mx-4 py-2 font-semibold text-sky-500">
               <label className="pl-3">TOTAL</label>
-              <div className="px-3 border-slate-100">{formatter.format(Number(accumulatePrice(receiptList)))}</div>
+              <div className="px-3 border-slate-100">
+                {formatter.format(Number(accumulatePrice(receiptList)))}
+              </div>
             </div>
             <form onSubmit={onSubmitHandler} className="flex justify-center">
               <button

@@ -1,9 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
 const payment = new Schema<PaymentType>({
-  merchantId: {
-    type: String
-  },
   orderDetail: {
     type: Object
   },
@@ -21,4 +18,6 @@ const payment = new Schema<PaymentType>({
   },
 })
 
-const Payment: mongoose.Model<PaymentType> = mongoose.models.Invoice || mongoose.model('Invoice', payment)
+const Payment: mongoose.Model<PaymentType> = mongoose.models.Payment || mongoose.model('Payment', payment)
+
+export default Payment

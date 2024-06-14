@@ -17,6 +17,7 @@ declare global {
         images: string[]
         user: {
             username: string
+            email: string
         }
     }
     }

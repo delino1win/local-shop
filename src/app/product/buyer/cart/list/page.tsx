@@ -25,7 +25,7 @@ async function getCartList () {
                 select: '_id userId productName brand categories inventory price images',
                 populate: {
                     path: "user",
-                    select: "username"
+                    select: "username email"
             }}
         }).lean();
 
