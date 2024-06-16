@@ -53,13 +53,11 @@ export default function CheckoutReceipt({
 
     if (!res.ok) {
       alert("Failed!");
-    } else {
-      const data: PaymentType = await res.json();
-
-      console.log(data)
-      router.push(`/accountPayment/${data._id}`); //expect the invoiceI
-
     }
+    
+    const data: OrderType = await res.json();
+    console.log(data);
+    router.push(`/accountPayment/${data._id}`); //expect the invoiceI
   };
 
   return (

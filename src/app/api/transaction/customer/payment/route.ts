@@ -1,6 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import connectMongoDataBase from "@/libs/mongodb";
-import Payment from "@/models/payment";
+import Payment from "@/models/order";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
