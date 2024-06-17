@@ -54,7 +54,7 @@ export default function CheckoutReceipt({
     if (!res.ok) {
       alert("Failed!");
     }
-    
+
     const data: OrderType = await res.json();
     console.log(data);
     router.push(`/accountPayment/${data._id}`); //expect the invoiceI
@@ -82,7 +82,6 @@ export default function CheckoutReceipt({
                       alt=""
                     />
                   </div>
-
                   <div className="flex flex-col w-full gap-1">
                     <div className="flex flex-row  justify-between">
                       <div>{item.product.productName}</div>

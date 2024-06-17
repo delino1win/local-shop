@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
   const testOrder = {
     transaction_details: {
-      order_id: "testing_static_0001",
+      order_id: "order_local_0002",
       gross_amount: 50000,
     },
     item_details: [{
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       customerPaymentAccount: session?.user?.id,
       token: token,
       url: url,
-      paymentStatus: "pending",
+      paymentStatus: "PENDING",
       createdAt: Date.now()
     })
 

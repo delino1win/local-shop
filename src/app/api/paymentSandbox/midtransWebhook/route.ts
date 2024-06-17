@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const order = await Order.findOne({orderId: order_id})
+    const order = await Order.findOne({orderId: order_id}).lean()
 
     if(!order) {
       return NextResponse.json(
@@ -49,6 +49,26 @@ export async function POST(request: Request) {
         { status: 400 }
       ); 
     }
+
+    let tempUpdatePaymentStatus
+
+    if(transaction_status === "settlement") {
+      tempUpdatePaymentStatus = "PAID"
+    } else if (transaction_status === "expire") {
+      tempUpdatePaymentStatus = "EXPIRED"
+    }
+
+    if(tempUpdatePaymentStatus) {
+      await Order.findOneAndUpdate(
+        {orderId: order_id},
+        {paymentStatus: tempUpdatePaymentStatus},
+        {new: true}
+      )
+    }
+
+    console.log(order)
+
+    return NextResponse.json({message: "Order Updated Success"}, {status: 200})
 
   } catch (error) {
     console.error(error);
